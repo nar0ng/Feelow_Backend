@@ -1,10 +1,9 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.ResponseDto;
-import com.feelow.Feelow.dto.SignInDto;
-import com.feelow.Feelow.dto.SignUpDto;
+import com.feelow.Feelow.dto.*;
 import com.feelow.Feelow.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +16,14 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/sign-up")
-    public ResponseDto<?> signUp(@RequestBody SignUpDto requestBody){
-        System.out.println(requestBody.toString());
-        return null;
-        //esponseDto<?> result = authService.signUp(requestBody);
-        //        return  result;
-    }
+    @PostMapping("/signup")
+    public ResponseEntity<ResponseDto<SignUpResponseDto>> signUp(@RequestBody SignUpDto signUpDto) {
+        ResponseDto<SignUpResponseDto> response = authService.signIn(signUpDto)
 
-    // @PostMapping("/sign-in")
-    //public ResponseDto<SingInResponseDro> signIn(@RequestBody SignInDto requestBody){
-    //    return null;
-    //}
+        if (response.isResult()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }
