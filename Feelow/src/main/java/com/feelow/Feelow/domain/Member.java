@@ -1,6 +1,5 @@
 package com.feelow.Feelow.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.dto.SignUpDto;
 import jakarta.persistence.*;
@@ -52,10 +51,7 @@ public class Member {
         this.connected_at = dto.getConnected_at();
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();
-
-
     }
 
 }
-
 

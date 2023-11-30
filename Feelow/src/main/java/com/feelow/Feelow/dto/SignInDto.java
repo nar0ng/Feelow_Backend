@@ -29,6 +29,7 @@ public class SignInDto {
 
     private String email;
 
+    @SuppressWarnings("unchecked")
     @JsonProperty("properties")
     private void unpackNested_p(Map<String,Object> properties) {
         this.nickname = (String)properties.get("nickname");
