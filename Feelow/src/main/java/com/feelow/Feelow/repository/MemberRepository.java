@@ -9,5 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    // ID로 member 찾기
     Optional<Member> findById(Long id);
+
 }

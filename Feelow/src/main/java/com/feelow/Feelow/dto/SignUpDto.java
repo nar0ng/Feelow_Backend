@@ -15,10 +15,11 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @GeneratedValue
     private Long member_id;
 
+    @Id
     @JsonProperty("id")
     private Long id;
 

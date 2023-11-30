@@ -25,16 +25,20 @@ public class Member {
     @Column(name = "member_id")
     private Long member_id;
 
+    // Id
     @Id
     @JsonProperty("id")
     @Column(name = "id")
     private Long id;
 
+    // 연결된 날짜 및 시간
     @JsonProperty("connected_at")
     private LocalDateTime connected_at;
 
+    // 닉네임
     private String nickname;
 
+    // 이메일
     private String email;
 
     @SuppressWarnings("unchecked")
@@ -49,6 +53,7 @@ public class Member {
         this.email = (String)kakao_account.get("email");
     }
 
+    // SignUpDto를 사용하여 Member 객체 생성
     public Member(SignUpDto dto){
         this.member_id = dto.getMember_id();
         this.id = dto.getId();

@@ -17,18 +17,11 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
+    // 사용자 가입 / 로그인 요청 처리
     @PostMapping("/sign-up")
     public ResponseDto<?> signUp(@RequestBody SignUpDto requestBody){
         return authService.signUp(requestBody);
     }
 
 
-
-
-
-
-    // @PostMapping("/sign-in")
-    //public ResponseDto<SingInResponseDro> signIn(@RequestBody SignInDto requestBody){
-    //    return null;
-    //}
 }
