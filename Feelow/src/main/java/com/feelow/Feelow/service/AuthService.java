@@ -30,7 +30,6 @@ public class AuthService {
                 SignInResponseDto signInResponseDto = new SignInResponseDto(null, 0, existingMember);  // Token과 exprTime은 null 및 0으로 초기화
                 return ResponseDto.setSuccess("Already existing member", signInResponseDto);
             } else {
-
                 /// 존재하지 않는 ID인 경우, Member 엔티티 생성 및 저장
                  Member member = new Member(dto);
                 memberRepository.save(member);
