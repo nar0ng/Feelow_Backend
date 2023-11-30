@@ -1,5 +1,6 @@
 package com.feelow.Feelow.dto;
 
+import com.feelow.Feelow.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,6 +16,6 @@ public class ResponseDto<D> {
     }
 
     public static <D> ResponseDto<D> setFailed(String message,D data){
-        return  ResponseDto.set(false, message, null);
+        return  ResponseDto.set(false, message, data);
     }
 }
