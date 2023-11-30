@@ -18,33 +18,30 @@ public class AuthService {
 
     public ResponseDto<?> signUp(SignUpDto dto) {
         Long id = dto.getId();
-        System.out.println("ㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌ");
+
 
         try {
+            // 이미 존재하는 ID인지 확인
             Optional<Member> existingMemberOptional = memberRepository.findById(id);
 
             if (existingMemberOptional.isPresent()) {
-                System.out.println("안");
-                // ID exists, return existing member in SignInResponseDto
+                // ID가 이미 존재하면, 기존 회원 정보를 반환
                 Member existingMember = existingMemberOptional.get();
                 SignInResponseDto signInResponseDto = new SignInResponseDto(null, 0, existingMember);  // Token과 exprTime은 null 및 0으로 초기화
                 return ResponseDto.setSuccess("Already existing member", signInResponseDto);
             } else {
-                // 로그를 통해 ID가 제대로 설정되어 있는지 확인
-                System.out.println("ID: " + id);
 
-                // Member Entity 생성 및 데이터베이스에 Entity 저장
-                // Member member = new Member(dto);
-               // memberRepository.save(member);
+                /// 존재하지 않는 ID인 경우, Member 엔티티 생성 및 저장
+                 Member member = new Member(dto);
+                memberRepository.save(member);
 
                 // 회원 정보를 담아 ResponseDto 반환
-                return ResponseDto.setSuccess("Sign up Success", null);
+                return ResponseDto.setSuccess("Sign up Success", member);
             }
         } catch (Exception e) {
-            // Handle other exceptions
+            // 기타 예외 처리
             return ResponseDto.setFailed("Error", null);
         }
 
-        // Handle unexpected situations
     }
 }
