@@ -1,6 +1,6 @@
-package com.feelow.Feelow.controllers;
+package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.entity.Member;
+import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 // 회원 정보를 받아서 db에 저장
 @RestController
@@ -23,11 +24,8 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<String> addMember(@RequestBody Member member){
+    public ResponseEntity<String> addMember(@RequestBody Member member) {
         memberRepository.save(member);
         return new ResponseEntity<>("Member added successfully!", HttpStatus.CREATED);
     }
-
-
-
 }
