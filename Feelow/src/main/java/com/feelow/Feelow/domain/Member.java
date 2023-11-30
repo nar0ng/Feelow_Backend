@@ -85,9 +85,6 @@ public class Member {
     }
 
 
-    public Long getTeacherId() {
-        return (teacher != null) ? teacher.getTeacherId() : null;
-    }
 
     public Long getStudentId() {
         return (student != null) ? student.getStudentId() : null;
