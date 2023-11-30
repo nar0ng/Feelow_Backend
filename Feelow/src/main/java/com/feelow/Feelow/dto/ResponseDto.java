@@ -2,11 +2,9 @@ package com.feelow.Feelow.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor(staticName = "set")
-@NoArgsConstructor
 public class ResponseDto<D> {
     private boolean result;
     private String message;
@@ -17,8 +15,6 @@ public class ResponseDto<D> {
     }
 
     public static <D> ResponseDto<D> setFailed(String message,D data){
-        return  ResponseDto.set(false, message, data);
+        return  ResponseDto.set(false, message, null);
     }
-
-
 }

@@ -7,16 +7,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
-    database: mysql
-    properties:
-      hibernate:
-        format_sql: true
-
-
-
-
 
 
 
