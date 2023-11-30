@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -19,11 +20,14 @@ import java.util.Map;
 @Entity(name="Member")
 @Table(name="Member")
 public class Member {
-    @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long member_id;
 
+    @Id
     @JsonProperty("id")
+    @Column(name = "id")
     private Long id;
 
     @JsonProperty("connected_at")
@@ -51,6 +55,20 @@ public class Member {
         this.connected_at = dto.getConnected_at();
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();
+    }
+
+    // equals 및 hashCode 추가
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return id.equals(member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 
 }
