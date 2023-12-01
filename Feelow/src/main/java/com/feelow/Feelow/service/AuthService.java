@@ -4,9 +4,11 @@ import com.feelow.Feelow.dto.SignUpDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.dto.SignInResponseDto;
+import com.feelow.Feelow.dto.SignUpResponseDto;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,8 +26,6 @@ public class AuthService {
         Long id = dto.getId();
         String email = dto.getEmail();
 
-        String token = tokenProvider.create(email);
-        int exprTime = 3600000;
 
 
         try {
@@ -33,21 +33,29 @@ public class AuthService {
             Optional<Member> existingMemberOptional = memberRepository.findById(id);
 
             if (existingMemberOptional.isPresent()) {
+
+                String token = tokenProvider.create(email);
+                int exprTime = 3600000;
+
                 // ID가 이미 존재하면, 기존 회원 정보를 반환
                 Member existingMember = existingMemberOptional.get();
-                SignInResponseDto signInResponseDto = new SignInResponseDto(token, exprTime, existingMember);  // Token과 exprTime은 null 및 0으로 초기화
-                return ResponseDto.setSuccess("Already existing member", signInResponseDto);
+                SignInResponseDto signInResponseDto = new SignInResponseDto(token, exprTime, existingMember);
+                return ResponseDto.setSuccess(HttpStatus.OK, "Already existing member", signInResponseDto);
             } else {
-                /// 존재하지 않는 ID인 경우, Member 엔티티 생성 및 저장
-                 Member member = new Member(dto);
-                memberRepository.save(member);
 
-                // 회원 정보를 담아 ResponseDto 반환
-                return ResponseDto.setSuccess("Sign up Success", member);
+                String token = tokenProvider.create(email);
+                int exprTime = 3600000;
+
+                /// 존재하지 않는 ID인 경우, Member 엔티티 생성 및 저장
+                 Member newMember = new Member(dto);
+                memberRepository.save(newMember);
+
+                SignUpResponseDto signUpResponseDto = new SignUpResponseDto(token, exprTime, newMember);
+                return ResponseDto.setSuccess(HttpStatus.CREATED, "Sign up Success", signUpResponseDto);
             }
         } catch (Exception e) {
             // 기타 예외 처리
-            return ResponseDto.setFailed("Error", null);
+            return ResponseDto.setFailed(HttpStatus.BAD_GATEWAY, "Error", null);
         }
 
 
