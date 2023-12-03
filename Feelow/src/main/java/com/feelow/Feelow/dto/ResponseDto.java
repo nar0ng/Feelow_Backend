@@ -1,12 +1,14 @@
 package com.feelow.Feelow.dto;
 
 import com.feelow.Feelow.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
 @Data
+@Getter
 @AllArgsConstructor(staticName = "set")
+@NoArgsConstructor
+@Builder
 public class ResponseDto<D> {
 
     // 성공 / 실패 여부
@@ -30,4 +32,5 @@ public class ResponseDto<D> {
     public static <D> ResponseDto<D> setFailed(HttpStatus httpStatus, String message,D data){
         return  ResponseDto.set(false, httpStatus.value(), message, data);
     }
+
 }
