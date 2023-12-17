@@ -15,6 +15,6 @@ public class MemberController {
     @GetMapping("/")
     public String getMember(@AuthenticationPrincipal MemberDto memberDto){
 
-        return "안녕하세요!" + memberDto.getNickname() + "님!" + memberDto.getEmail();
+        return "안녕하세요!";
     }
 }
