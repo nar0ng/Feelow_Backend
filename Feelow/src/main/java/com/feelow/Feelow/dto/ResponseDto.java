@@ -3,34 +3,30 @@ package com.feelow.Feelow.dto;
 import com.feelow.Feelow.domain.Member;
 import lombok.*;
 import org.springframework.http.HttpStatus;
-
 @Data
-@Getter
 @AllArgsConstructor(staticName = "set")
 @NoArgsConstructor
 @Builder
 public class ResponseDto<D> {
 
-    // 성공 / 실패 여부
-    private boolean result;
-
-    // 상태 코드
+    private boolean success;
     private int statusCode;
-
-    // 결과 메세지
     private String message;
-
-    // 반환 데이터
     private D data;
 
-    // 성공
-    public static <D> ResponseDto<D> setSuccess(HttpStatus httpStatus, String message, D data){
-        return  ResponseDto.set(true, httpStatus.value(), message, data);
+    public static <D> ResponseDto<D> success(String message, D data) {
+        return ResponseDto.set(true, HttpStatus.OK.value(), message, data);
     }
 
-    // 실패
-    public static <D> ResponseDto<D> setFailed(HttpStatus httpStatus, String message,D data){
-        return  ResponseDto.set(false, httpStatus.value(), message, data);
+    public static <D> ResponseDto<D> success(HttpStatus httpStatus, String message, D data) {
+        return ResponseDto.set(true, httpStatus.value(), message, data);
     }
 
+    public static <D> ResponseDto<D> failed(String message, D data) {
+        return ResponseDto.set(false, HttpStatus.BAD_GATEWAY.value(), message, data);
+    }
+
+    public static <D> ResponseDto<D> failed(HttpStatus httpStatus, String message, D data) {
+        return ResponseDto.set(false, httpStatus.value(), message, data);
+    }
 }

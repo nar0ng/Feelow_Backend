@@ -16,14 +16,33 @@ import java.util.Map;
 @NoArgsConstructor
 public class MemberDto {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
 
+    @Id
+    @JsonProperty("id")
     private Long id;
 
-    private LocalDateTime connected_at;
+    @JsonProperty("connected_at")
+        private LocalDateTime connected_at;
 
-    private String nickname;
+        private String nickname;
 
-    private String email;
+        private String email;
 
-}
+        @SuppressWarnings("unchecked")
+        @JsonProperty("properties")
+        private void unpackNested_p(Map<String,Object> properties) {
+            this.nickname = (String)properties.get("nickname");
+        }
+
+        @SuppressWarnings("unchecked")
+        @JsonProperty("kakao_account")
+        private void unpackNested_k(Map<String,Object> kakao_account) {
+            this.email = (String)kakao_account.get("email");
+        }
+
+
+    }
+
+
