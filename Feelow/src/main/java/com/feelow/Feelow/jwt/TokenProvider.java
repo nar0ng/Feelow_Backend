@@ -17,17 +17,12 @@ import java.util.Date;
 @Component
 public class TokenProvider implements InitializingBean {
 
-    private static final String AUTHORITIES_KEY = "auth";
-    private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
-
-
     // jwt 생성 및 검증을 위한 키 생성
     private  static final String SECURITY_KEY = "jwtseckey!@";
 
 
     // jwt 생성하는 메서드
-    public String create (String email){
+    public String create (String email, String nickname){
         // 만료 기한 : 현재 시간 + 1시간
         Date exprTime = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
@@ -36,7 +31,10 @@ public class TokenProvider implements InitializingBean {
                 // 암호화에 사용될 알고리즘과 키
                 .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
                 // jwt 제목, 생성일, 만료일
-                .setSubject(email).setIssuedAt(new Date()).setExpiration(exprTime)
+                .setSubject(email)
+                .claim("nickname", nickname)
+                .setIssuedAt(new Date())
+                .setExpiration(exprTime)
                 .compact();
     }
 
@@ -48,9 +46,21 @@ public class TokenProvider implements InitializingBean {
         return claims.getSubject();
     }
 
+    public MemberInfo getMemberInfo(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(token).getBody();
+        String email = claims.getSubject();
+        String nickname = claims.get("nickname", String.class); // 닉네임을 추출
+        return new MemberInfo(email, nickname);
+    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
 
+    }
+
+    @Value
+    public static class MemberInfo {
+        private String email;
+        private String nickname;
     }
 }
