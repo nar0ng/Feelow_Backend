@@ -72,21 +72,25 @@ public class TokenProvider implements InitializingBean {
             // 유효성 확인
             validateExpiration(claims);
 
-            // 새로운 만료 시간 계산
-            Date newExpiriationTime = Date.from(Instant.now().plus(REFRESH_TOKEN_EXPIRATION, ChronoUnit.MILLIS));
+            // 리프레시 토큰 갱신
+            Date newExpirationTime = Date.from(Instant.now().plus(REFRESH_TOKEN_EXPIRATION, ChronoUnit.MILLIS));
+            String refreshToken = claims.get("refreshToken", String.class);
 
-            // 리프레시 토큰 생성
-            return Jwts.builder()
-                    .setClaims(claims)
-                    .setExpiration(newExpiriationTime)
-                    .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
-                    .compact();
+            // 리프레시 토큰이 존재하면 기존 리프레시 토큰을 사용하여 갱신
+            if (refreshToken != null) {
+                return Jwts.builder()
+                        .setClaims(claims)
+                        .setExpiration(newExpirationTime)
+                        .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
+                        .compact();
+            } else {
+                throw new RuntimeException("No existing refreshToken found for refresh");
+            }
         } catch (Exception e) {
             // 토큰 갱신 실패 시 예외 처리
             log.error("Token refresh failed", e);
             throw new BadCredentialsException("Token refresh failed", e);
         }
-
     }
 
     @Override
@@ -102,6 +106,17 @@ public class TokenProvider implements InitializingBean {
             throw new BadCredentialsException("JWT has expired");
         }
     }
+    // TokenProvider 클래스 내에 추가할 메서드
+    public boolean isAccessTokenExpired(String accessToken) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(accessToken).getBody();
+            return claims.getExpiration().before(new Date());
+        } catch (Exception e) {
+            return true; // 만료 여부 확인 중 에러 발생 시도 만료된 것으로 처리
+        }
     }
+
+}
+
 
 
