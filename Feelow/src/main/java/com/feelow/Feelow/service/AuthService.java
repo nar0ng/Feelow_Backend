@@ -1,6 +1,5 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.dto.RefreshTokenResponseDto;
 import com.feelow.Feelow.dto.SignUpDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.domain.Member;
