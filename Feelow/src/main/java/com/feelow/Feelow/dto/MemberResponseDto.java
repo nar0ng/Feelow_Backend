@@ -11,10 +11,13 @@ import lombok.NoArgsConstructor;
 public class MemberResponseDto {
 
     // 제공 토큰
-    private String token;
+    private String accessToken;
+
+    // 리프레쉬 토큰
+    private String refreshToken;
 
     // 만료 시간
-    private int exprTime;
+    private int accessTokenexprTime;
 
     // 사용자 정보를 담은 Member 객체
     Member member;

@@ -1,5 +1,6 @@
 package com.feelow.Feelow.service;
 
+import com.feelow.Feelow.dto.RefreshTokenResponseDto;
 import com.feelow.Feelow.dto.SignUpDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.domain.Member;
@@ -32,23 +33,30 @@ public class AuthService {
 
             if (existingMemberOptional.isPresent()) {
 
-                String token = tokenProvider.create(email, nickname);
-                int exprTime = 3600000;
-
                 // ID가 이미 존재하면, 기존 회원 정보를 반환
                 Member existingMember = existingMemberOptional.get();
-                MemberResponseDto memberResponseDto = new MemberResponseDto(token, exprTime, existingMember);
+
+                // 토큰 생성
+                String accessToken = tokenProvider.create(email, nickname);
+                String refreshToken = tokenProvider.refresh(accessToken); // refreshToken 생성
+                int exprTime = 3600000; // 1시간
+
+
+                // 갱신된 토큰 및 만료 시간을 응답 DTO에 담아 반환
+                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, existingMember);
                 return ResponseDto.success(HttpStatus.OK, "Already existing member", memberResponseDto);
             } else {
-
-                String token = tokenProvider.create(email, nickname);
-                int exprTime = 3600000;
 
                 /// 존재하지 않는 ID인 경우, Member 엔티티 생성 및 저장
                 Member newMember = new Member(dto);
                 memberRepository.save(newMember);
 
-                MemberResponseDto memberResponseDto = new MemberResponseDto(token, exprTime, newMember);
+                // 토큰 생성
+                String accessToken = tokenProvider.create(email, nickname);
+                String refreshToken = tokenProvider.refresh(accessToken); // refreshToken 생성
+                int exprTime = 3600000; // 1시간
+
+                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, newMember);
                 return ResponseDto.success(HttpStatus.CREATED, "Sign up Success", memberResponseDto);
             }
         } catch (Exception e) {
