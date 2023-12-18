@@ -41,6 +41,11 @@ public class AuthService {
                 int exprTime = 3600000; // 1시간
 
 
+                // 만료된 accessToken인 경우 refreshToken을 사용하여 새로운 accessToken 발급
+                if (tokenProvider.isAccessTokenExpired(accessToken)) {
+                    accessToken = tokenProvider.refresh(refreshToken);
+                }
+
                 // 갱신된 토큰 및 만료 시간을 응답 DTO에 담아 반환
                 MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, existingMember);
                 return ResponseDto.success(HttpStatus.OK, "Already existing member", memberResponseDto);
@@ -54,6 +59,11 @@ public class AuthService {
                 String accessToken = tokenProvider.create(email, nickname);
                 String refreshToken = tokenProvider.refresh(accessToken); // refreshToken 생성
                 int exprTime = 3600000; // 1시간
+
+                // 만료된 accessToken인 경우 refreshToken을 사용하여 새로운 accessToken 발급
+                if (tokenProvider.isAccessTokenExpired(accessToken)) {
+                    accessToken = tokenProvider.refresh(refreshToken);
+                }
 
                 MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, newMember);
                 return ResponseDto.success(HttpStatus.CREATED, "Sign up Success", memberResponseDto);
