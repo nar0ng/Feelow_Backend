@@ -59,6 +59,8 @@ public class AuthService {
                 String accessToken = tokenProvider.create(email, nickname);
                 String refreshToken = tokenProvider.refresh(accessToken); // refreshToken 생성
                 int exprTime = 3600000; // 1시간
+                //int exprTime = 300000; // 5분 (test)
+
 
                 // 만료된 accessToken인 경우 refreshToken을 사용하여 새로운 accessToken 발급
                 if (tokenProvider.isAccessTokenExpired(accessToken)) {
