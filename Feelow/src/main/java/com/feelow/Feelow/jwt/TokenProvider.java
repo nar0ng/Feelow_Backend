@@ -28,15 +28,24 @@ public class TokenProvider implements InitializingBean {
         // 만료 기한 : 현재 시간 + 1시간
         Date exprTime = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
 
+        // 리프레시 토큰 만료 기한: 현재 시간 + 1주일
+        Date refreshExprTime = Date.from(Instant.now().plus(REFRESH_TOKEN_EXPIRATION, ChronoUnit.MILLIS));
+
+        // 리프레시 토큰 생성
+        String refreshToken = Jwts.builder()
+                .setSubject(email)
+                .setExpiration(refreshExprTime)
+                .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
+                .compact();
+
         // jwt 생성
         return Jwts.builder()
-                // 암호화에 사용될 알고리즘과 키
                 .signWith(SignatureAlgorithm.HS512, SECURITY_KEY)
-                // jwt 제목, 생성일, 만료일
                 .setSubject(email)
                 .claim("nickname", nickname)
                 .setIssuedAt(new Date())
                 .setExpiration(exprTime)
+                .claim("refreshToken", refreshToken)  // 리프레시 토큰을 클레임에 추가
                 .compact();
     }
 
@@ -65,9 +74,9 @@ public class TokenProvider implements InitializingBean {
     }
 
     // Refresh token
-    public String refresh(String token){
+    public String refresh(String accessToken){
         try {
-            Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(token).getBody();
+            Claims claims = Jwts.parser().setSigningKey(SECURITY_KEY).parseClaimsJws(accessToken).getBody();
 
             // 유효성 확인
             validateExpiration(claims);
