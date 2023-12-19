@@ -17,7 +17,7 @@ public class MemberResponseDto {
     private String refreshToken;
 
     // 만료 시간
-    private int accessTokenexprTime;
+    private int exprTime;
 
     // 사용자 정보를 담은 Member 객체
     Member member;
