@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/Feelow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: jdbc:mysql://feelow.cvqqak8scuix.ap-northeast-2.rds.amazonaws.com:3306/Feelow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: Pebhyb-jocrat-widzy0
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
