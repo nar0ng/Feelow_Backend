@@ -7,19 +7,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
 
 
+  profiles:
+    include: real-db
 
-
-
-
-
-
-
-
-
-
-
-
+  session:
+    store-type: jdbc
