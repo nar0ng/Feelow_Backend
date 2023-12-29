@@ -36,6 +36,7 @@ public class ItemController {
         List<ItemDto> itemDtoList = itemService.getItemListDto();
         return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
+    // 추후 수정 예쩡
     
  */
 
