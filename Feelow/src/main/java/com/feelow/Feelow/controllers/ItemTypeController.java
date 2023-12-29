@@ -19,8 +19,8 @@ public class ItemTypeController {
     private ItemTypeService itemTypeService;
 
     @PostMapping("/itemType/upload")
-    public ResponseEntity<ItemType> rupload(@RequestBody ItemTypeDto itemTypeDto){
-        ItemType itemType = itemTypeService.rupload(itemTypeDto);
+    public ResponseEntity<ItemType> iupload(@RequestBody ItemTypeDto itemTypeDto){
+        ItemType itemType = itemTypeService.iupload(itemTypeDto);
         return (itemType != null)?
                 ResponseEntity.status(HttpStatus.OK).body(itemType):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
