@@ -41,6 +41,8 @@ public class Member {
     // 이메일
     private String email;
 
+    private String member_type;
+
     @SuppressWarnings("unchecked")
     @JsonProperty("properties")
     private void unpackNested_p(Map<String,Object> properties) {
