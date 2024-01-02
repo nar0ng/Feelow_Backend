@@ -2,12 +2,12 @@ package com.feelow.Feelow.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.dto.SignUpDto;
+import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -27,9 +27,8 @@ public class Member {
     private Long memberId;
 
     // Id
-
+    @NotNull
     @JsonProperty("id")
-    @Column(name = "id")
     private Long id;
 
     // 연결된 날짜 및 시간
