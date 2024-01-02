@@ -7,17 +7,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name="Classroom")
-@Table(name="Classroom")
-public class Classroom {
+@Entity(name = "Classroom")
+@Table(name = "classroom")
+public class Classroom implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long classroom_id;
+    @Column(name = "classroom_id")
+    private Long classroomId;
 
     @JsonProperty("school")
     private String school;
@@ -26,8 +29,14 @@ public class Classroom {
     private int grade;
 
     @JsonProperty("class_num")
-    private int class_num;
+    @Column(name = "class_num")
+    private int classNum;
 
+    // 여러 명의 학생을 가짐
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private List<Student> students;
 
-
+    // 한 명의 선생님을 가짐
+    @OneToOne(mappedBy = "classroom", cascade = CascadeType.ALL)
+    private Teacher teacher;
 }

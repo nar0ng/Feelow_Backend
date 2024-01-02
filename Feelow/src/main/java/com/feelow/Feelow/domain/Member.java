@@ -21,12 +21,13 @@ import java.util.Map;
 @Table(name="Member")
 public class Member {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long member_id;
+    private Long memberId;
 
     // Id
-    @Id
+
     @JsonProperty("id")
     @Column(name = "id")
     private Long id;
@@ -57,7 +58,6 @@ public class Member {
 
     // SignUpDto를 사용하여 Member 객체 생성
     public Member(SignUpDto dto){
-        this.member_id = dto.getMember_id();
         this.id = dto.getId();
         this.connected_at = dto.getConnected_at();
         this.email = dto.getEmail();

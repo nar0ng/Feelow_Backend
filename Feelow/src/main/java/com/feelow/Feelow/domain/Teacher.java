@@ -24,8 +24,6 @@ public class Teacher {
     @JsonProperty("name")
     private String teacher_name;
 
-    private Long classroom_id;
-
     @JsonProperty("member_type")
     private String member_type;
 
@@ -33,7 +31,7 @@ public class Teacher {
     @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = false, updatable = false)
     private Member member;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = false, updatable = false)
     private Classroom classroom;
 }
