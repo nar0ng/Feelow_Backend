@@ -16,10 +16,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class SignUpDto {
 
-    @GeneratedValue
-    private Long member_id;
-
-    @Id
     @JsonProperty("id")
     private Long id;
 

@@ -36,7 +36,6 @@ public class Student {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = false)
-    @JsonBackReference
     private Classroom classroom;
 
 }

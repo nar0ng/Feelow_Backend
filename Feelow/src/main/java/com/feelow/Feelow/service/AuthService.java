@@ -28,8 +28,8 @@ public class AuthService {
 
         try {
             // 이미 존재하는 ID인지 확인
-            Optional<Member> existingMemberOptional = memberRepository.findById(id);
-
+            Optional<Member> existingMemberOptional = memberRepository.findMemberById(id);
+            System.out.println("Is existingMember present? " + existingMemberOptional.isPresent());
             if (existingMemberOptional.isPresent()) {
 
                 // ID가 이미 존재하면, 기존 회원 정보를 반환

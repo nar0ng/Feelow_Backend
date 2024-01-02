@@ -20,18 +20,14 @@ public class Teacher {
     @Column(name = "teacher_id")
     private Long teacher_id;
 
-
     @JsonProperty("name")
     private String teacher_name;
 
-    @JsonProperty("member_type")
-    private String member_type;
-
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = true, updatable = false)
     private Member member;
 
     @OneToOne
-    @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = false, updatable = false)
+    @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = false)
     private Classroom classroom;
 }
