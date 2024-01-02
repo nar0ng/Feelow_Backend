@@ -15,3 +15,7 @@ spring:
 
   session:
     store-type: jdbc
+
+logging:
+  level:
+    org.hibernate: DEBUG

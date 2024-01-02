@@ -1,11 +1,17 @@
 package com.feelow.Feelow.service;
 
+import com.feelow.Feelow.domain.Classroom;
 import com.feelow.Feelow.domain.Member;
+import com.feelow.Feelow.domain.Student;
+import com.feelow.Feelow.domain.Teacher;
 import com.feelow.Feelow.dto.AdditionalInfoRequestDto;
 import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.repository.ClassroomRepository;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.repository.TeacherRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,12 +29,16 @@ public class AdditionalInfoService {
     TeacherRepository teacherRepository;
 
     @Autowired
+    ClassroomRepository classroomRepository;
+
+    @Autowired
     private MemberRepository memberRepository;
 
+
     @Transactional
-    public ResponseDto<?> updateMemberType(Long id, String member_type) {
+    public ResponseDto<?> updateMemberType(Long memberId, String member_type) {
         try {
-            Optional<Member> optionalMember = memberRepository.findById(id);
+            Optional<Member> optionalMember = memberRepository.findByMemberId(memberId);
 
             if (optionalMember.isPresent()) {
                 Member loginMember = optionalMember.get();
@@ -45,6 +55,74 @@ public class AdditionalInfoService {
             return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "멤버타입 업데이트에 실패했습니다: " + e.getMessage(), null);
         }
     }
+
+    @Transactional
+    public ResponseDto<?> addAdditionalInfo(Long memberId, AdditionalInfoRequestDto infoRequestDto) {
+        try {
+            Optional<Member> optionalMember = memberRepository.findByMemberId(memberId);
+
+            if (optionalMember.isPresent()) {
+                Member member = optionalMember.get();
+
+                // 이미 등록된 학급인지 확인
+                Classroom existingClassroom = classroomRepository.findBySchoolAndGradeAndClassNum(
+                        infoRequestDto.getSchool(),
+                        infoRequestDto.getGrade(),
+                        infoRequestDto.getClass_num()
+                ).orElse(null);
+
+                // 이미 등록된 학급이 없으면 새로운 학급 등록
+                if (existingClassroom == null) {
+                    Classroom classroom = new Classroom();
+                    classroom.setSchool(infoRequestDto.getSchool());
+                    classroom.setGrade(infoRequestDto.getGrade());
+                    classroom.setClassNum(infoRequestDto.getClass_num());
+                    classroomRepository.save(classroom);
+                    existingClassroom = classroom;
+                }
+
+                if ("student".equals(member.getMember_type())) {
+                    // 주어진 memberId로 이미 존재하는 Student 확인
+                    Optional<Student> existingStudent = studentRepository.findByMember_memberId(member.getMemberId());
+                    System.out.println("Is existingStudent present? " + existingStudent.isPresent());
+                    // 이미 존재하는 경우, 해당 정보 반환
+                    if (existingStudent.isPresent()) {
+                        return ResponseDto.failed("이미 저장된 학생입니다.", null);
+                    } else {
+                        // 새로운 학생 정보 저장
+                        System.out.println("새로운 학생 정보 저");
+                        Student student = new Student();
+                        student.setNickname(infoRequestDto.getNickname());
+                        student.setStudent_number(infoRequestDto.getStudent_number());
+                        student.setStudent_name(infoRequestDto.getName());
+                        student.setClassroom(existingClassroom);
+                        student.setMember(member);
+                        studentRepository.save(student);
+
+                        return ResponseDto.success("Student 정보가 저장되었습니다.", student);
+                    }
+                } else if ("teacher".equals(member.getMember_type())) {
+                    // teacher 정보 저장
+                    Teacher teacher = new Teacher();
+                    teacher.setTeacher_name(infoRequestDto.getName());
+                    teacher.setClassroom(existingClassroom);
+                    teacherRepository.save(teacher);
+
+                    return ResponseDto.success("Teacher 정보가 저장되었습니다.", teacher);
+                } else {
+                    return ResponseDto.failed(HttpStatus.BAD_REQUEST, "유효하지 않은 멤버 타입입니다.", null);
+                }
+
+            } else {
+                return ResponseDto.failed(HttpStatus.NOT_FOUND, "해당 ID의 회원을 찾을 수 없습니다.", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "멤버 정보 저장에 실패했습니다." + e.getMessage(), null);
+        }
+    }
+
+
 
 
 }

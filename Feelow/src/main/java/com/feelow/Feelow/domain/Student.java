@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
-    private Long student_id;
+    private Long studentId;
 
     @JsonProperty("nickname")
     private String nickname;
@@ -29,17 +30,13 @@ public class Student {
     @JsonProperty("name")
     private String student_name;
 
-    @JsonProperty("member_type")
-    private String member_type;
-
-    private Long classroom_id;
-
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = true, updatable = false)
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = false)
+    @JsonBackReference
     private Classroom classroom;
 
 }
