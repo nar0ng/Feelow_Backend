@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,8 +17,7 @@ public class Classroom implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "classroom_id")
-    private Long classroomId;
+    private Long classroom_id;
 
     @JsonProperty("school")
     private String school;
@@ -29,8 +26,8 @@ public class Classroom implements Serializable {
     private int grade;
 
     @JsonProperty("class_num")
-    @Column(name = "class_num")
-    private int classNum;
+    private int class_num;
+
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonBackReference
