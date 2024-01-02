@@ -16,10 +16,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class SignInDto {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_id;
 
-    @Id
     @JsonProperty("id")
     private Long id;
 
