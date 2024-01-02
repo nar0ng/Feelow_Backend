@@ -19,7 +19,6 @@ public class MemberDto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long member_id;
 
-    @Id
     @JsonProperty("id")
     private Long id;
 
