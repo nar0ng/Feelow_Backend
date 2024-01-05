@@ -24,7 +24,8 @@ public class ItemController {
 
     @Autowired
     private ItemTypeRepository itemTypeRepository;
-/*
+
+    /*
     @PostMapping("/upload")
     public ResponseEntity<String> uploadItem(@RequestBody final ItemDto itemDto){
         ItemService.uploadItem(itemDto);
@@ -36,8 +37,13 @@ public class ItemController {
         List<ItemDto> itemDtoList = itemService.getItemListDto();
         return new ResponseEntity<>(itemDtoList, HttpStatus.OK);
     }
-    // 추후 수정 예쩡
+
+    @GetMapping("/list/{typeId}")
+    public ResponseEntity<List<ItemDto>> getItemListByType(@PathVariable Long typeId){
+        List<ItemDto> ItemDtoList = ItemService.getItemListByType(typeId);
+        return new ResponseEntity<>(ItemDtoList, HttpStatus.OK);
+    }
     
- */
+    */
 
 }
