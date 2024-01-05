@@ -2,12 +2,12 @@ package com.feelow.Feelow.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.dto.SignUpDto;
+import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -21,14 +21,14 @@ import java.util.Map;
 @Table(name="Member")
 public class Member {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long member_id;
+    private Long memberId;
 
     // Id
-    @Id
+    @NotNull
     @JsonProperty("id")
-    @Column(name = "id")
     private Long id;
 
     // 연결된 날짜 및 시간
@@ -40,6 +40,8 @@ public class Member {
 
     // 이메일
     private String email;
+
+    private String member_type;
 
     @SuppressWarnings("unchecked")
     @JsonProperty("properties")
@@ -55,7 +57,6 @@ public class Member {
 
     // SignUpDto를 사용하여 Member 객체 생성
     public Member(SignUpDto dto){
-        this.member_id = dto.getMember_id();
         this.id = dto.getId();
         this.connected_at = dto.getConnected_at();
         this.email = dto.getEmail();
