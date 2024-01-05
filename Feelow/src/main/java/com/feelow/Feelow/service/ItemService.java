@@ -23,7 +23,7 @@ public class ItemService {
     @Autowired
     private ItemTypeRepository itemTypeRepository;
 
-    /*
+
     public void uploadItem(ItemDto itemDto){
         Item item = convertDtoToEntity(itemDto);
         itemRepository.save(item);
@@ -37,21 +37,31 @@ public class ItemService {
 
     }
 
-    public ItemDto getItemListByType(Long typeId){
+    public List<ItemDto> getItemListByType(Long typeId){
         List<Item> itemList = itemRepository.findByTypeId(typeId);
-        return itemList.stream()
-                .map(this::convertEntityToDto)
-                .collect(Collectors.toList());
+        return itemList.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        //return itemList.stream()
+        //        .map(this::convertEntityToDto)
+        //        .collect(Collectors.toList());
 
     }
 
     private Item convertDtoToEntity(ItemDto itemDto){
         return Item.builder()
-                .name(ItemDto.getName())
-                .typeId(ItemDto.geTypeId())
-                .intro(ItmeDto.getIntro())
+                .name(itemDto.getName())
+                .typeId(itemDto.getTypeId())
+                .intro(itemDto.getIntro())
                 .build();
     }
 
-    */
+    private ItemDto convertEntityToDto(Item item){
+        return ItemDto.builder()
+                .itemId(item.getItemId())
+                .name(item.getName())
+                .typeId(item.getTypeId())
+                .intro(item.getIntro())
+                .build();
+    }
+
+
 }

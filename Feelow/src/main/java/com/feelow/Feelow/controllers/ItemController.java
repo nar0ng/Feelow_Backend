@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -25,10 +24,10 @@ public class ItemController {
     @Autowired
     private ItemTypeRepository itemTypeRepository;
 
-    /*
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadItem(@RequestBody final ItemDto itemDto){
-        ItemService.uploadItem(itemDto);
+        itemService.uploadItem(itemDto);
         return ResponseEntity.status(HttpStatus.OK).body("아이템 업로드 완료");
     }
 
@@ -40,10 +39,10 @@ public class ItemController {
 
     @GetMapping("/list/{typeId}")
     public ResponseEntity<List<ItemDto>> getItemListByType(@PathVariable Long typeId){
-        List<ItemDto> ItemDtoList = ItemService.getItemListByType(typeId);
+        List<ItemDto> ItemDtoList = itemService.getItemListByType(typeId);
         return new ResponseEntity<>(ItemDtoList, HttpStatus.OK);
     }
     
-    */
+
 
 }
