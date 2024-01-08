@@ -16,4 +16,7 @@ spring:
   session:
     store-type: jdbc
 
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
 
