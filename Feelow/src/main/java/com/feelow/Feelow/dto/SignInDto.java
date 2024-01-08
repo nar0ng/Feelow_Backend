@@ -16,7 +16,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class SignInDto {
 
-
     @JsonProperty("id")
     private Long id;
 
