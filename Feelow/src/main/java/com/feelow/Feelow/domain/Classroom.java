@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,9 +35,11 @@ public class Classroom implements Serializable {
 
     // 여러 명의 학생을 가짐
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Student> students;
 
     // 한 명의 선생님을 가짐
     @OneToOne(mappedBy = "classroom", cascade = CascadeType.ALL)
+    @JsonBackReference
     private Teacher teacher;
 }
