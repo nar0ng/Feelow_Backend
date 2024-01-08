@@ -26,8 +26,6 @@ public class Member {
     @Column(name = "member_id")
     private Long memberId;
 
-    // Id
-    @NotNull
     @JsonProperty("id")
     private Long id;
 
