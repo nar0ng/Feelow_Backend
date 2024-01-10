@@ -14,7 +14,8 @@ public class ItemDto {
     private String name; // 아이템 이름
     private Long typeId; // ItemType 외래키
     private String intro; // 아이템 소개
+    private Long price; // 아이템 가격
 
-    public Item toEntity() {return new Item(itemId, name, typeId, intro);}
+    public Item toEntity() {return new Item(itemId, name, typeId, intro, price);}
 
 }
