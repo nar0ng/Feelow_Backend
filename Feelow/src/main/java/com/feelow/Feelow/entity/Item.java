@@ -27,4 +27,7 @@ public class Item {
     @Column(length = 200, nullable = false)
     private String intro;
 
+    @Column(nullable = false)
+    private Long price;
+
 }
