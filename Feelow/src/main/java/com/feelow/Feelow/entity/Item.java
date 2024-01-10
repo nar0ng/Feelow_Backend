@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
 @ToString
 public class Item {
