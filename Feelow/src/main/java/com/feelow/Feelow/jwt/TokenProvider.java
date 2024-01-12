@@ -20,7 +20,7 @@ public class TokenProvider implements InitializingBean {
     private static final long REFRESH_TOKEN_EXPIRATION = 604800000;
 
     // jwt 생성 및 검증을 위한 키 생성
-    private  static final String SECURITY_KEY = "jwtseckey!@";
+    private static final String SECURITY_KEY = "jwtseckey!@";
 
     // jwt 생성하는 메서드
     public String create (String email, String nickname){

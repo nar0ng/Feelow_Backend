@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 .httpBasic((httpBasic) -> httpBasic.disable())
                 // 세션 기반 인증
                 .sessionManagement((sessionManagement) ->            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/", "/api/auth/**").permitAll().anyRequest().authenticated());
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/", "/api/auth/**", "/swagger-ui/**").permitAll().anyRequest().authenticated());
 
         httpSecurity.addFilterBefore(jwtAuthencationFilter, UsernamePasswordAuthenticationFilter.class);
 
