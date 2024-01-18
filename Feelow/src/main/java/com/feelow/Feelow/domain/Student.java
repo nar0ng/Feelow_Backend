@@ -1,6 +1,7 @@
 package com.feelow.Feelow.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name="Student")
 @Table(name="Student")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Student {
 
     @Id
