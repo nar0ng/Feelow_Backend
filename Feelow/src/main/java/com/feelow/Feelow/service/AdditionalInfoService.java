@@ -99,7 +99,7 @@ public class AdditionalInfoService {
                         student.setMember(member);
                         studentRepository.save(student);
 
-                        return ResponseDto.failed(HttpStatus.CONFLICT, "Student 정보가 저장되었습니다.", student);
+                        return ResponseDto.success(HttpStatus.OK, "Student 정보가 저장되었습니다.", student);
                     }
                     // 멤버 타입이 teacher이면 teacher에 추가 정보 저장
                 } else if ("teacher".equals(member.getMemberType())) {
