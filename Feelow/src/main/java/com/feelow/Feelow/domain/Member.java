@@ -82,7 +82,7 @@ public class Member {
 
 
     public Long getTeacherId() {
-        return teacher.getTeacher_id();
+        return teacher.getTeacherId();
     }
 
     public Long getStudentId() {
