@@ -2,6 +2,7 @@ package com.feelow.Feelow.dto;
 
 import com.feelow.Feelow.domain.Classroom;
 import com.feelow.Feelow.domain.Student;
+import com.feelow.Feelow.domain.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,9 @@ public class MyPageDto {
     private int studentNumber;
     private String studentName;
 
+    private Long teacherId;
+    private String teacherName;
+
     private String school;
     private int grade;
     private int classNum;
@@ -30,6 +34,18 @@ public class MyPageDto {
                 .nickname(student.getNickname())
                 .studentNumber(student.getStudentNumber())
                 .studentName(student.getStudentName())
+                .school(classroom.getSchool())
+                .grade(classroom.getGrade())
+                .classNum(classroom.getClassNum())
+                .build();
+    }
+
+    public static MyPageDto fromTeacher(Teacher teacher) {
+        Classroom classroom = teacher.getClassroom();
+
+        return MyPageDto.builder()
+                .teacherId(teacher.getTeacherId())
+                .teacherName(teacher.getTeacherName())
                 .school(classroom.getSchool())
                 .grade(classroom.getGrade())
                 .classNum(classroom.getClassNum())

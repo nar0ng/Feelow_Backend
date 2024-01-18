@@ -112,7 +112,7 @@ public class AdditionalInfoService {
                     } else {
                         // teacher 정보 저장
                         Teacher teacher = new Teacher();
-                        teacher.setTeacher_name(infoRequestDto.getName());
+                        teacher.setTeacherName(infoRequestDto.getName());
                         teacher.setClassroom(existingClassroom);
                         teacher.setMember(member);
                         teacherRepository.save(teacher);
