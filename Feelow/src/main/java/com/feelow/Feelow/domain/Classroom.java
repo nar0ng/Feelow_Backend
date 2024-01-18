@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Classroom")
-@Table(name = "classroom")
+@Table(name = "Classroom")
 public class Classroom implements Serializable {
 
     @Id
@@ -33,12 +33,10 @@ public class Classroom implements Serializable {
     @Column(name = "class_num")
     private int classNum;
 
-    // 여러 명의 학생을 가짐
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Student> students;
 
-    // 한 명의 선생님을 가짐
     @OneToOne(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonBackReference
     private Teacher teacher;

@@ -1,5 +1,6 @@
 package com.feelow.Feelow.controller;
 
+import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.dto.SignInDto;
 import com.feelow.Feelow.dto.SignUpDto;
