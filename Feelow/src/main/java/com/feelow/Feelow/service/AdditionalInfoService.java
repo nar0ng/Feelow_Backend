@@ -41,7 +41,7 @@ public class AdditionalInfoService {
 
             if (optionalMember.isPresent()) {
                 Member loginMember = optionalMember.get();
-                loginMember.setMember_type(member_type);
+                loginMember.setMemberType(member_type);
                 return ResponseDto.success("멤버 타입이 업데이트 되었습니다.", loginMember);
             } else {
                 // 회원을 찾지 못한 경우에 대한 응답 반환
@@ -81,13 +81,13 @@ public class AdditionalInfoService {
                 }
 
                 // 멤버 타입이 student면 student에 추가 정보 저장
-                if ("student".equals(member.getMember_type())) {
+                if ("student".equals(member.getMemberType())) {
                     // 주어진 memberId로 이미 존재하는 Student 확인
                     Optional<Student> existingStudent = studentRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingStudent present? " + existingStudent.isPresent());
-                    // 이미 존재하는 경우, 해당 정보 반환
+                    // 이미 존재하는 경우
                     if (existingStudent.isPresent()) {
-                        return ResponseDto.success("이미 저장된 학생입니다.", existingStudent);
+                        return ResponseDto.failed("이미 저장된 학생입니다.", null);
                     } else {
                         // 새로운 학생 정보 저장
                         System.out.println("새로운 학생 정보 저장");
@@ -99,20 +99,20 @@ public class AdditionalInfoService {
                         student.setMember(member);
                         studentRepository.save(student);
 
-                        return ResponseDto.success("Student 정보가 저장되었습니다.", student);
+                        return ResponseDto.failed(HttpStatus.CONFLICT, "Student 정보가 저장되었습니다.", student);
                     }
                     // 멤버 타입이 teacher이면 teacher에 추가 정보 저장
-                } else if ("teacher".equals(member.getMember_type())) {
+                } else if ("teacher".equals(member.getMemberType())) {
                     // 주어진 memberId로 이미 존재하는 Teacher 확인
                     Optional<Teacher> existingTeacher = teacherRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingTeacher present?" + existingTeacher.isPresent());
-                    // 이미 존재하는 경우, 해당 정보 반환
+                    // 이미 존재하는 경우
                     if (existingTeacher.isPresent()) {
-                        return ResponseDto.success("이미 저장된 선생님입니다.", existingTeacher);
+                        return ResponseDto.failed(HttpStatus.CONFLICT,"이미 저장된 선생님입니다.", null);
                     } else {
                         // teacher 정보 저장
                         Teacher teacher = new Teacher();
-                        teacher.setTeacher_name(infoRequestDto.getName());
+                        teacher.setTeacherName(infoRequestDto.getName());
                         teacher.setClassroom(existingClassroom);
                         teacher.setMember(member);
                         teacherRepository.save(teacher);
