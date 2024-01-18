@@ -23,7 +23,7 @@ public class Teacher {
     @JsonProperty("name")
     private String teacher_name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = true, updatable = false)
     private Member member;
 
