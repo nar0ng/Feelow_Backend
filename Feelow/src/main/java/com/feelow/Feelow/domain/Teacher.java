@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity(name="Teacher")
 @Table(name="Teacher")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Teacher {
 
     @Id
