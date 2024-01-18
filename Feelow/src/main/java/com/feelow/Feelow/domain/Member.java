@@ -29,14 +29,11 @@ public class Member {
     @JsonProperty("id")
     private Long id;
 
-    // 연결된 날짜 및 시간
     @JsonProperty("connected_at")
     private LocalDateTime connected_at;
 
-    // 닉네임
     private String nickname;
 
-    // 이메일
     private String email;
 
     private String member_type;
@@ -61,7 +58,6 @@ public class Member {
         this.nickname = dto.getNickname();
     }
 
-    // equals 및 hashCode 추가
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
