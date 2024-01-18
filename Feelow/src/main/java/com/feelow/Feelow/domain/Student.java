@@ -31,7 +31,7 @@ public class Student {
     @JsonProperty("name")
     private String studentName;
 
-    @ManyToOne
+    @OneToOne
     @JsonBackReference
     @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = true, updatable = false)
     private Member member;

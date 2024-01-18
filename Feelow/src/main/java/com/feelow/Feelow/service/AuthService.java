@@ -1,5 +1,6 @@
 package com.feelow.Feelow.service;
 
+import com.feelow.Feelow.dto.MemberDto;
 import com.feelow.Feelow.dto.SignUpDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.domain.Member;
@@ -47,7 +48,7 @@ public class AuthService {
                 }
 
                 // 갱신된 토큰 및 만료 시간을 응답 DTO에 담아 반환
-                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, existingMember);
+                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, MemberDto.getMember(existingMember));
                 return ResponseDto.success(HttpStatus.OK, "Already existing member", memberResponseDto);
             } else {
 
@@ -67,7 +68,7 @@ public class AuthService {
                     accessToken = tokenProvider.refresh(refreshToken);
                 }
 
-                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, newMember);
+                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, MemberDto.getMember(newMember));
                 return ResponseDto.success(HttpStatus.CREATED, "Sign up Success", memberResponseDto);
             }
         } catch (Exception e) {

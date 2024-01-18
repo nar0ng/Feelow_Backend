@@ -41,7 +41,7 @@ public class AdditionalInfoService {
 
             if (optionalMember.isPresent()) {
                 Member loginMember = optionalMember.get();
-                loginMember.setMember_type(member_type);
+                loginMember.setMemberType(member_type);
                 return ResponseDto.success("멤버 타입이 업데이트 되었습니다.", loginMember);
             } else {
                 // 회원을 찾지 못한 경우에 대한 응답 반환
@@ -81,7 +81,7 @@ public class AdditionalInfoService {
                 }
 
                 // 멤버 타입이 student면 student에 추가 정보 저장
-                if ("student".equals(member.getMember_type())) {
+                if ("student".equals(member.getMemberType())) {
                     // 주어진 memberId로 이미 존재하는 Student 확인
                     Optional<Student> existingStudent = studentRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingStudent present? " + existingStudent.isPresent());
@@ -102,7 +102,7 @@ public class AdditionalInfoService {
                         return ResponseDto.failed(HttpStatus.CONFLICT, "Student 정보가 저장되었습니다.", student);
                     }
                     // 멤버 타입이 teacher이면 teacher에 추가 정보 저장
-                } else if ("teacher".equals(member.getMember_type())) {
+                } else if ("teacher".equals(member.getMemberType())) {
                     // 주어진 memberId로 이미 존재하는 Teacher 확인
                     Optional<Teacher> existingTeacher = teacherRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingTeacher present?" + existingTeacher.isPresent());
