@@ -93,8 +93,8 @@ public class AdditionalInfoService {
                         System.out.println("새로운 학생 정보 저장");
                         Student student = new Student();
                         student.setNickname(infoRequestDto.getNickname());
-                        student.setStudent_number(infoRequestDto.getStudent_number());
-                        student.setStudent_name(infoRequestDto.getName());
+                        student.setStudentNumber(infoRequestDto.getStudent_number());
+                        student.setStudentName(infoRequestDto.getName());
                         student.setClassroom(existingClassroom);
                         student.setMember(member);
                         studentRepository.save(student);
