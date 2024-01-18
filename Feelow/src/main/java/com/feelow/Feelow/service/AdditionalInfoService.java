@@ -85,9 +85,9 @@ public class AdditionalInfoService {
                     // 주어진 memberId로 이미 존재하는 Student 확인
                     Optional<Student> existingStudent = studentRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingStudent present? " + existingStudent.isPresent());
-                    // 이미 존재하는 경우, 해당 정보 반환
+                    // 이미 존재하는 경우
                     if (existingStudent.isPresent()) {
-                        return ResponseDto.success("이미 저장된 학생입니다.", existingStudent);
+                        return ResponseDto.failed("이미 저장된 학생입니다.", null);
                     } else {
                         // 새로운 학생 정보 저장
                         System.out.println("새로운 학생 정보 저장");
@@ -99,16 +99,16 @@ public class AdditionalInfoService {
                         student.setMember(member);
                         studentRepository.save(student);
 
-                        return ResponseDto.success("Student 정보가 저장되었습니다.", student);
+                        return ResponseDto.failed(HttpStatus.CONFLICT, "Student 정보가 저장되었습니다.", student);
                     }
                     // 멤버 타입이 teacher이면 teacher에 추가 정보 저장
                 } else if ("teacher".equals(member.getMember_type())) {
                     // 주어진 memberId로 이미 존재하는 Teacher 확인
                     Optional<Teacher> existingTeacher = teacherRepository.findByMember_memberId(member_id);
                     System.out.println("Is existingTeacher present?" + existingTeacher.isPresent());
-                    // 이미 존재하는 경우, 해당 정보 반환
+                    // 이미 존재하는 경우
                     if (existingTeacher.isPresent()) {
-                        return ResponseDto.success("이미 저장된 선생님입니다.", existingTeacher);
+                        return ResponseDto.failed(HttpStatus.CONFLICT,"이미 저장된 선생님입니다.", null);
                     } else {
                         // teacher 정보 저장
                         Teacher teacher = new Teacher();
