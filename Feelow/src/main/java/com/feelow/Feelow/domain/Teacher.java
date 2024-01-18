@@ -18,12 +18,12 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teacher_id")
-    private Long teacher_id;
+    private Long teacherId;
 
     @JsonProperty("name")
-    private String teacher_name;
+    private String teacherName;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "member_id", referencedColumnName = "member_id", insertable = true, updatable = false)
     private Member member;
 

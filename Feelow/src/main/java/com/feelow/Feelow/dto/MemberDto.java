@@ -1,10 +1,12 @@
 package com.feelow.Feelow.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.feelow.Feelow.domain.Classroom;
+import com.feelow.Feelow.domain.Member;
+import com.feelow.Feelow.domain.Student;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,34 +16,60 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MemberDto {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_id;
+    private Long memberId;
 
-    @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("connected_at")
-        private LocalDateTime connected_at;
+    private LocalDateTime connected_at;
 
-        private String nickname;
+    private String nickname;
 
-        private String email;
+    private String email;
 
-        @SuppressWarnings("unchecked")
-        @JsonProperty("properties")
-        private void unpackNested_p(Map<String,Object> properties) {
-            this.nickname = (String)properties.get("nickname");
+    private String member_type;
+
+    private Long studentId;
+
+    private Long teacherId;
+
+    public static MemberDto getMember(Member member) {
+        if ("student".equals(member.getMemberType()) && member.getStudent() != null) {
+            // member_type이 student이고 Student 정보가 있을 경우 studentId를 사용
+            return MemberDto.builder()
+                    .memberId(member.getMemberId())
+                    .id(member.getId())
+                    .connected_at(member.getConnected_at())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .member_type(member.getMemberType())
+                    .studentId(member.getStudentId())
+                    .build();
+        } else if ("teacher".equals(member.getMemberType()) && member.getTeacher() != null) {
+            System.out.println("teacher id");
+            return MemberDto.builder()
+                    .memberId(member.getMemberId())
+                    .id(member.getId())
+                    .connected_at(member.getConnected_at())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .member_type(member.getMemberType())
+                    .teacherId(member.getTeacherId())
+                    .build();
+        } else {
+            // 그 외의 경우에는 기존의 로직 사용
+            return MemberDto.builder()
+                    .memberId(member.getMemberId())
+                    .id(member.getId())
+                    .connected_at(member.getConnected_at())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .member_type(member.getMemberType())
+                    .build();
         }
-
-        @SuppressWarnings("unchecked")
-        @JsonProperty("kakao_account")
-        private void unpackNested_k(Map<String,Object> kakao_account) {
-            this.email = (String)kakao_account.get("email");
-        }
-
-
     }
+}
 
 

@@ -18,7 +18,5 @@ public class MemberResponseDto {
 
     // 만료 시간
     private int exprTime;
-
-    // 사용자 정보를 담은 Member 객체
-    Member member;
+    private MemberDto member;
 }

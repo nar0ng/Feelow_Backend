@@ -1,5 +1,7 @@
 package com.feelow.Feelow.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.dto.SignUpDto;
 import com.sun.istack.NotNull;
@@ -10,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,7 +39,13 @@ public class Member {
 
     private String email;
 
-    private String member_type;
+    private String memberType;
+
+    @OneToOne(mappedBy = "member")
+    private Teacher teacher;
+
+    @OneToOne(mappedBy = "member")
+    private Student student;
 
     @SuppressWarnings("unchecked")
     @JsonProperty("properties")
@@ -71,5 +80,13 @@ public class Member {
         return id.hashCode();
     }
 
+
+    public Long getTeacherId() {
+        return teacher.getTeacherId();
+    }
+
+    public Long getStudentId() {
+        return student.getStudentId();
+    }
 }
 
