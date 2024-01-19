@@ -1,24 +1,22 @@
 package com.feelow.Feelow.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelow.Feelow.domain.Chat;
 import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.dto.ChatRequest;
-import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
-import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,9 +32,10 @@ public class ChatController {
     private MemberRepository memberRepository;
 
     @PostMapping(produces = "application/json; charset=utf8")
-    public ResponseEntity<String> Chat(@RequestBody ChatRequest chatRequest,
-                                       @PathVariable Long memberId,
-                                       @PathVariable String date) {
+    public ResponseEntity<String> chat(
+            @RequestBody ChatRequest chatRequest,
+            @PathVariable Long memberId,
+            @PathVariable String date) {
 
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
@@ -47,7 +46,22 @@ public class ChatController {
 
         String flaskUrl = "http://127.0.0.1:5000/api/chat";
 
-        RestTemplate restTemplate = new RestTemplate();
+        // Explicitly set TLS version to TLSv1.2
+        SSLContext sslContext;
+        try {
+            sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+        } catch (Exception e) {
+            // Handle the exception appropriately
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        // Create a custom request factory with the specified SSLContext
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(
+        );
+
+        // Create a RestTemplate with the custom request factory
+        RestTemplate restTemplate = new RestTemplate(requestFactory);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -64,7 +78,6 @@ public class ChatController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
-
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
 
@@ -72,9 +85,9 @@ public class ChatController {
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
 
-                    for (JsonNode node: sentimentNode){
+                    for (JsonNode node : sentimentNode) {
                         String label = node.get("label").asText();
-                        if ("positive".equals(label)){
+                        if ("positive".equals(label)) {
                             positiveScore = node.get("score").asDouble();
                             break;
                         }
@@ -105,19 +118,11 @@ public class ChatController {
         }
     }
 
-
     @GetMapping("")
     public ResponseDto<List<Chat>> getChatRecords(
             @PathVariable Long memberId,
-            @PathVariable String date
-    ) {
+            @PathVariable String date) {
         List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
 }
-
-
-
-
-
-
