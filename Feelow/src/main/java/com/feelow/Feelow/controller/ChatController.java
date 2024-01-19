@@ -46,8 +46,8 @@ public class ChatController {
         String flaskUrl = "http://192.168.0.23:5001/api/chat";
 
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(5000); // 연결 타임아웃 (밀리초 단위)
-        factory.setReadTimeout(10000);   // 읽기 타임아웃 (밀리초 단위)
+        factory.setConnectTimeout(0); // 연결 무기한
+        factory.setReadTimeout(0);   // 읽기 무기한
 
         RestTemplate restTemplate = new RestTemplate(factory);
         // RestTemplate restTemplate = new RestTemplate(factory);
