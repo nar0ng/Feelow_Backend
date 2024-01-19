@@ -15,12 +15,14 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("api/chat/{memberId}/{date}")
+@RequestMapping("/api/chat/{memberId}/{date}")
 public class ChatController {
 
     @Autowired
@@ -43,7 +45,12 @@ public class ChatController {
 
         String flaskUrl = "http://192.168.0.23:5001/api/chat";
 
-        RestTemplate restTemplate = new RestTemplate();
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(5000); // 연결 타임아웃 (밀리초 단위)
+        factory.setReadTimeout(10000);   // 읽기 타임아웃 (밀리초 단위)
+
+        RestTemplate restTemplate = new RestTemplate(factory);
+        // RestTemplate restTemplate = new RestTemplate(factory);
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -52,9 +59,6 @@ public class ChatController {
         // HTTP 엔터티 생성
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
 
-        SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
-        factory.setReadTimeout(60000);  // 20 seconds
-        factory.setConnectTimeout(60000);  // 20 seconds
 
 
         try {
