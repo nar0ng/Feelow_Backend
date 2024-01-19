@@ -5,37 +5,42 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelow.Feelow.domain.Chat;
+import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.dto.ChatRequest;
+import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("api/{studentId}/chat/{date}")
+@RequestMapping("api/chat/{memberId}/{date}")
 public class ChatController {
 
     @Autowired
     private ChatService chatService;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private MemberRepository memberRepository;
 
     @PostMapping(produces = "application/json; charset=utf8")
     public ResponseEntity<String> Chat(@RequestBody ChatRequest chatRequest,
-                                       @PathVariable Long studentId,
+                                       @PathVariable Long memberId,
                                        @PathVariable String date) {
 
-        Student student = studentRepository.findById(studentId).orElse(null);
+        Member member = memberRepository.findByMemberId(memberId).orElse(null);
 
-        if (student == null) {
+        if (member == null) {
             // 학생이 존재하지 않는 경우 404 Not Found 반환
             return ResponseEntity.notFound().build();
         }
@@ -62,19 +67,32 @@ public class ChatController {
 
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
-                String sentimentJson = jsonNode.get("sentiment").toString();
 
-                JsonNode sentimentNode = new ObjectMapper().readTree(sentimentJson);
-                String firstLabel = sentimentNode.get(0).get("label").asText();
+                JsonNode sentimentNode = jsonNode.get("sentiment");
+                if (sentimentNode.isArray() && sentimentNode.size() > 0) {
+                    double positiveScore = 0.0;
 
-                Chat chat = new Chat();
-                chat.setSentiment(firstLabel);
-                chat.setInput(input);
-                chat.setResponse(responseText);
-                chat.setDate(date);
-                chat.setStudent(student);
+                    for (JsonNode node: sentimentNode){
+                        String label = node.get("label").asText();
+                        if ("positive".equals(label)){
+                            positiveScore = node.get("score").asDouble();
+                            break;
+                        }
+                    }
 
-                chatService.saveChat(chat);
+                    Chat chat = new Chat();
+                    chat.setPositiveScore(positiveScore);
+                    chat.setInput(input);
+                    chat.setResponse(responseText);
+                    chat.setDate(date);
+                    chat.setMember(member);
+
+                    chat.setInputTime(LocalDateTime.now());
+
+                    chatService.saveChat(chat);
+                } else {
+                    System.out.println("No sentiment information found");
+                }
 
                 return response;
             } else {
@@ -90,10 +108,10 @@ public class ChatController {
 
     @GetMapping("")
     public ResponseDto<List<Chat>> getChatRecords(
-            @PathVariable Long studentId,
+            @PathVariable Long memberId,
             @PathVariable String date
     ) {
-        List<Chat> chatRecords = chatService.getChatRecords(studentId, date).getData();
+        List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
 }
