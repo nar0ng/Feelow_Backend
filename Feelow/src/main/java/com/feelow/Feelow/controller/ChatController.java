@@ -11,11 +11,12 @@ import com.feelow.Feelow.dto.ChatRequest;
 import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
-import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
+import com.feelow.Feelow.service.RequestResponseLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -55,6 +56,11 @@ public class ChatController {
 
         // HTTP 엔터티 생성
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
+
+        restTemplate.getInterceptors().add(new RequestResponseLoggingInterceptor());
+        SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
+        factory.setReadTimeout(5000);
+        factory.setConnectTimeout(5000);
 
         try {
             // Flask 서버에 POST 요청 보내기
