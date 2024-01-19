@@ -41,7 +41,7 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http:///192.168.0.23:5001/api/chat";
+        String flaskUrl = "http://192.168.0.23:5001/api/chat";
 
         RestTemplate restTemplate = new RestTemplate();
 
