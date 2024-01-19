@@ -1,18 +1,14 @@
 package com.feelow.Feelow.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelow.Feelow.domain.Chat;
 import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.dto.ChatRequest;
-import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.service.ChatService;
-import com.feelow.Feelow.service.RequestResponseLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -56,7 +52,6 @@ public class ChatController {
         // HTTP 엔터티 생성
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
 
-        restTemplate.getInterceptors().add(new RequestResponseLoggingInterceptor());
         SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
         factory.setReadTimeout(5000);
         factory.setConnectTimeout(5000);
