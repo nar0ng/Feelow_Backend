@@ -1,6 +1,7 @@
 package com.feelow.Feelow.dto;
 
 import com.feelow.Feelow.domain.Classroom;
+import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.domain.Teacher;
 import lombok.AllArgsConstructor;
@@ -50,5 +51,35 @@ public class MyPageDto {
                 .grade(classroom.getGrade())
                 .classNum(classroom.getClassNum())
                 .build();
+    }
+
+    public static MyPageDto fromMember(Member member){
+
+        if (member.getMemberType().equals("student")) {
+            Classroom classroom = member.getStudent().getClassroom();
+
+            return MyPageDto.builder()
+                    .studentId(member.getStudentId())
+                    .nickname(member.getStudent().getNickname())
+                    .studentNumber(member.getStudent().getStudentNumber())
+                    .studentName(member.getStudent().getStudentName())
+                    .school(classroom.getSchool())
+                    .grade(classroom.getGrade())
+                    .classNum(classroom.getClassNum())
+                    .build();
+
+        } else if (member.getMemberType().equals("teacher")) {
+            Classroom classroom = member.getTeacher().getClassroom();
+
+            return MyPageDto.builder()
+                    .teacherId(member.getTeacherId())
+                    .teacherName(member.getTeacher().getTeacherName())
+                    .school(classroom.getSchool())
+                    .grade(classroom.getGrade())
+                    .classNum(classroom.getClassNum())
+                    .build();
+        }
+
+        return null;
     }
 }
