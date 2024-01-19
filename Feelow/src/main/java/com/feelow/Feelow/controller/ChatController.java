@@ -53,8 +53,8 @@ public class ChatController {
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
 
         SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
-        factory.setReadTimeout(10000);  // 10 seconds
-        factory.setConnectTimeout(10000);  // 10 seconds
+        factory.setReadTimeout(20000);  // 20 seconds
+        factory.setConnectTimeout(20000);  // 20 seconds
 
 
         try {
