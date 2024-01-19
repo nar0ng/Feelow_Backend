@@ -14,7 +14,6 @@ import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.service.ChatService;
 import com.feelow.Feelow.service.RequestResponseLoggingInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +119,7 @@ public class ChatController {
         List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
+
 }
 
 
