@@ -53,8 +53,9 @@ public class ChatController {
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
 
         SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
-        factory.setReadTimeout(5000);
-        factory.setConnectTimeout(5000);
+        factory.setReadTimeout(10000);  // 10 seconds
+        factory.setConnectTimeout(10000);  // 10 seconds
+
 
         try {
             // Flask 서버에 POST 요청 보내기
