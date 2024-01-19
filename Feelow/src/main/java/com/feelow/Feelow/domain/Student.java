@@ -43,8 +43,8 @@ public class Student {
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = true)
     private Classroom classroom;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Chat> chats;
+//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    private List<Chat> chats;
 
 }

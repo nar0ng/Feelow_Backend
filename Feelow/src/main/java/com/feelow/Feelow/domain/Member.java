@@ -24,7 +24,6 @@ import java.util.Map;
 @Table(name="Member")
 
 public class Member {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -75,6 +74,10 @@ public class Member {
         Member member = (Member) o;
         return id.equals(member.id);
     }
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Chat> chats;
 
     @Override
     public int hashCode() {
