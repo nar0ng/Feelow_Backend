@@ -12,14 +12,15 @@ import com.feelow.Feelow.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api/chat/{memberId}/{date}")
+@RequestMapping("api/chat/{memberId}/{date}")
 public class ChatController {
 
     @Autowired
@@ -40,35 +41,44 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http://192.168.0.23:5001/api/chat";
-
-        WebClient webClient = WebClient.create();
+        String flaskUrl = "http://127.0.0.1:5000/api/chat";
+        RestTemplate restTemplate = new RestTemplate();
+        SSLContext sslContext;
 
         try {
-            // Use WebClient to send the POST request
-            String response = webClient.post()
-                    .uri(flaskUrl)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(chatRequest)
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block(); // blocking for simplicity, consider using subscribe instead
+            sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, null, null);
+        } catch (Exception e) {
+            // Handle the exception appropriately
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-            if (response != null) {
-                // Handle the response
+        // HTTP 헤더 설정
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
+        // HTTP 엔터티 생성
+        HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
+
+        try {
+            // Flask 서버에 POST 요청 보내기
+            ResponseEntity<String> response = restTemplate.exchange(flaskUrl, HttpMethod.POST, entity, String.class);
+
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
                 ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode jsonNode = objectMapper.readTree(response);
+                JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
 
                 JsonNode sentimentNode = jsonNode.get("sentiment");
+
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
 
                     for (JsonNode node: sentimentNode){
                         String label = node.get("label").asText();
+
                         if ("positive".equals(label)){
                             positiveScore = node.get("score").asDouble();
                             break;
@@ -81,21 +91,19 @@ public class ChatController {
                     chat.setResponse(responseText);
                     chat.setDate(date);
                     chat.setMember(member);
-
                     chat.setInputTime(LocalDateTime.now());
-
                     chatService.saveChat(chat);
                 } else {
                     System.out.println("No sentiment information found");
                 }
 
-                return ResponseEntity.ok(response);
+                return response;
             } else {
-                // WebClient response is null, handle the error
+                // Flask 서버 응답이 성공하지 않은 경우 500 Internal Server Error 반환
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         } catch (JsonProcessingException e) {
-            // JSON mapping error
+            // JSON 매핑 중 오류 발생 시 500 Internal Server Error 반환
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
