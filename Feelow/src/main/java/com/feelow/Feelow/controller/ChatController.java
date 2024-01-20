@@ -41,17 +41,8 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http://127.0.0.1:5000/api/chat";
+        String flaskUrl = "http://127.0.0.1:5001/api/chat";
         RestTemplate restTemplate = new RestTemplate();
-        SSLContext sslContext;
-
-        try {
-            sslContext = SSLContext.getInstance("TLSv1.2");
-            sslContext.init(null, null, null);
-        } catch (Exception e) {
-            // Handle the exception appropriately
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
 
         // HTTP 헤더 설정
         HttpHeaders headers = new HttpHeaders();
