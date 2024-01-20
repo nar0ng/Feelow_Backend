@@ -11,12 +11,9 @@ import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -45,30 +42,23 @@ public class ChatController {
 
         String flaskUrl = "http://192.168.0.23:5001/api/chat";
 
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(30000); // 연결 무기한
-        factory.setReadTimeout(30000);   // 읽기 무기한
-
-        RestTemplate restTemplate = new RestTemplate(factory);
-        // RestTemplate restTemplate = new RestTemplate(factory);
-
-        // HTTP 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        // HTTP 엔터티 생성
-        HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
-
-
+        WebClient webClient = WebClient.create();
 
         try {
-            // Flask 서버에 POST 요청 보내기
-            ResponseEntity<String> response = restTemplate.exchange(flaskUrl, HttpMethod.POST, entity, String.class);
+            // Use WebClient to send the POST request
+            String response = webClient.post()
+                    .uri(flaskUrl)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(chatRequest)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block(); // blocking for simplicity, consider using subscribe instead
 
-            if (response.getStatusCode().equals(HttpStatus.OK)) {
+            if (response != null) {
+                // Handle the response
+
                 ObjectMapper objectMapper = new ObjectMapper();
-                JsonNode jsonNode = objectMapper.readTree(response.getBody());
-
+                JsonNode jsonNode = objectMapper.readTree(response);
 
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
@@ -99,17 +89,16 @@ public class ChatController {
                     System.out.println("No sentiment information found");
                 }
 
-                return response;
+                return ResponseEntity.ok(response);
             } else {
-                // Flask 서버 응답이 성공하지 않은 경우 500 Internal Server Error 반환
+                // WebClient response is null, handle the error
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         } catch (JsonProcessingException e) {
-            // JSON 매핑 중 오류 발생 시 500 Internal Server Error 반환
+            // JSON mapping error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @GetMapping("")
     public ResponseDto<List<Chat>> getChatRecords(
@@ -119,11 +108,4 @@ public class ChatController {
         List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
-
 }
-
-
-
-
-
-
