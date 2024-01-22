@@ -20,7 +20,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("api/chat/{memberId}/{date}")
+@RequestMapping("/api/chat/{memberId}/{date}")
 public class ChatController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http://192.168.0.23:5001/api/chat";
+        String flaskUrl = "http://43.200.217.72:5001/api/chat";
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 헤더 설정
