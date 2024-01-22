@@ -13,8 +13,6 @@ from langchain.prompts import StringPromptTemplate
 from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
-from transformers import pipeline
-
 
 
 api_key = os.getenv('OPENAI_API_KEY')
@@ -63,12 +61,12 @@ global_history = ""
 
 # 감정 분석
 #감정 분석 모델 불러오기
-
+from transformers import pipeline
 huggingface_api_token = os.getenv('HUGGINGFACEHUB_API_TOKEN')
 
 senti = pipeline(
     "text-classification",
-    model="matthewburke/korean_sentiment",
+    model="matthewburke/korean_sentiment"
 )
 
 def senti_score_json(input):
@@ -80,7 +78,7 @@ def senti_score_json(input):
     elif item['label'] == 'LABEL_1':
         item['label'] = 'positive'
 
-  # senti_score_json = json.dumps(score, ensure_ascii=False, indent=2)
+  senti_score_json = json.dumps(score, ensure_ascii=False, indent=2)
   print(senti_score_json)
 
   return score
@@ -104,7 +102,7 @@ def chat_endpoint():
 
         senti_score = senti_score_json(input_text)
 
-        return jsonify({'input': input_text, 'response': response, 'history': global_history, 'sentiment': senti_score})
+        return jsonify({'input': input_text, 'response': response, 'history': global_history, 'senti_score': senti_score})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -113,7 +111,7 @@ def chat_endpoint():
 def hello():
     return "Hello, World!"
 
-CORS(app)
+
 
 # Run the Flask app
 if __name__ == '__main__':
