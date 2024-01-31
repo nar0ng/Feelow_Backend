@@ -17,13 +17,13 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 @AllArgsConstructor
 public class MyPageController {
 
     private final MemberRepository memberRepository;
 
-    @GetMapping("/mypage/{memberId}")
+    @GetMapping("/api/mypage/{memberId}")
     public ResponseDto<MyPageDto> getMyPageInfo(@PathVariable Long memberId) {
         Optional<Member> getMember = memberRepository.findByMemberId(memberId);
 

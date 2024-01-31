@@ -41,7 +41,7 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = " http://127.0.0.1:5000/api/chat";
+        String flaskUrl = "http://127.0.0.1:5000/api/chat";
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 헤더 설정
