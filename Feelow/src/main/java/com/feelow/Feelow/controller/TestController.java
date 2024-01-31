@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api/hello")
 public class TestController {
 
-    private final String flaskUrl = "http://192.168.0.23:5001";
+    private final String flaskUrl = "http://43.200.217.72:5001";
 
     @GetMapping
     public ResponseEntity<String> ex() {
