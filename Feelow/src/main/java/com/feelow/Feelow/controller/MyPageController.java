@@ -23,7 +23,7 @@ public class MyPageController {
 
     private final MemberRepository memberRepository;
 
-    @GetMapping("/{memberId}/mypage")
+    @GetMapping("/mypage/{memberId}")
     public ResponseDto<MyPageDto> getMyPageInfo(@PathVariable Long memberId) {
         Optional<Member> getMember = memberRepository.findByMemberId(memberId);
 
