@@ -41,7 +41,7 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http://43.200.217.72:5001/api/chat";
+        String flaskUrl = " http://127.0.0.1:5000/api/chat";
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 헤더 설정
@@ -62,7 +62,7 @@ public class ChatController {
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
 
-                JsonNode sentimentNode = jsonNode.get("sentiment");
+                JsonNode sentimentNode = jsonNode.get("senti_score");
 
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
