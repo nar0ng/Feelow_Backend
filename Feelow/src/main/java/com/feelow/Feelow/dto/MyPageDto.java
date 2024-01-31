@@ -27,35 +27,9 @@ public class MyPageDto {
     private int grade;
     private int classNum;
 
-    public static MyPageDto fromStudent(Student student) {
-        Classroom classroom = student.getClassroom();
-
-        return MyPageDto.builder()
-                .studentId(student.getStudentId())
-                .nickname(student.getNickname())
-                .studentNumber(student.getStudentNumber())
-                .studentName(student.getStudentName())
-                .school(classroom.getSchool())
-                .grade(classroom.getGrade())
-                .classNum(classroom.getClassNum())
-                .build();
-    }
-
-    public static MyPageDto fromTeacher(Teacher teacher) {
-        Classroom classroom = teacher.getClassroom();
-
-        return MyPageDto.builder()
-                .teacherId(teacher.getTeacherId())
-                .teacherName(teacher.getTeacherName())
-                .school(classroom.getSchool())
-                .grade(classroom.getGrade())
-                .classNum(classroom.getClassNum())
-                .build();
-    }
-
     public static MyPageDto fromMember(Member member){
 
-        if (member.getMemberType().equals("student")) {
+        if ("student".equals(member.getMemberType()) && member.getTeacher() != null) {
             Classroom classroom = member.getStudent().getClassroom();
 
             return MyPageDto.builder()
@@ -68,7 +42,7 @@ public class MyPageDto {
                     .classNum(classroom.getClassNum())
                     .build();
 
-        } else if (member.getMemberType().equals("teacher")) {
+        } else if ("teacher".equals(member.getMemberType()) && member.getTeacher() != null) {
             Classroom classroom = member.getTeacher().getClassroom();
 
             return MyPageDto.builder()
