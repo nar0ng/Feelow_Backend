@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify
 import os
 import json
-from flask_cors import CORS
+
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 
 app = Flask(__name__)
-CORS(app)
 
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
