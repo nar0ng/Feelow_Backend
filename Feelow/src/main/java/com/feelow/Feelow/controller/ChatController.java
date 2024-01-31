@@ -11,16 +11,16 @@ import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-@RequestMapping("api/chat/{memberId}/{date}")
+@RequestMapping("/api/chat/{memberId}/{date}")
 public class ChatController {
 
     @Autowired
@@ -41,8 +41,7 @@ public class ChatController {
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http:///192.168.0.23:5001/api/chat";
-
+        String flaskUrl = "http://43.200.217.72:5001/api/chat";
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 헤더 설정
@@ -52,10 +51,6 @@ public class ChatController {
         // HTTP 엔터티 생성
         HttpEntity<ChatRequest> entity = new HttpEntity<>(chatRequest, headers);
 
-        SimpleClientHttpRequestFactory factory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
-        factory.setReadTimeout(5000);
-        factory.setConnectTimeout(5000);
-
         try {
             // Flask 서버에 POST 요청 보내기
             ResponseEntity<String> response = restTemplate.exchange(flaskUrl, HttpMethod.POST, entity, String.class);
@@ -64,16 +59,17 @@ public class ChatController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
-
                 String input = jsonNode.get("input").asText();
                 String responseText = jsonNode.get("response").asText();
 
                 JsonNode sentimentNode = jsonNode.get("sentiment");
+
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
 
                     for (JsonNode node: sentimentNode){
                         String label = node.get("label").asText();
+
                         if ("positive".equals(label)){
                             positiveScore = node.get("score").asDouble();
                             break;
@@ -86,9 +82,7 @@ public class ChatController {
                     chat.setResponse(responseText);
                     chat.setDate(date);
                     chat.setMember(member);
-
                     chat.setInputTime(LocalDateTime.now());
-
                     chatService.saveChat(chat);
                 } else {
                     System.out.println("No sentiment information found");
@@ -105,7 +99,6 @@ public class ChatController {
         }
     }
 
-
     @GetMapping("")
     public ResponseDto<List<Chat>> getChatRecords(
             @PathVariable Long memberId,
@@ -114,11 +107,4 @@ public class ChatController {
         List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
-
 }
-
-
-
-
-
-

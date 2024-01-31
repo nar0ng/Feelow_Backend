@@ -1,14 +1,9 @@
 package com.feelow.Feelow.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
@@ -42,9 +37,4 @@ public class Student {
     @JsonBackReference
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = true)
     private Classroom classroom;
-
-//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<Chat> chats;
-
 }
