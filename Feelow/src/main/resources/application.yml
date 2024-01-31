@@ -5,9 +5,17 @@ spring:
     password: Pebhyb-jocrat-widzy0
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+    jackson:
+        serialization:
+          write-dates-as-timestamps: false
+          write-date-timestamps-as-nanoseconds: false
+          indent-output: true
+          write-char-array-as-string: true
+          fail-on-empty-beans: false
+
   jpa:
     hibernate:
-      ddl-auto: update
+        ddl-auto: update
     show-sql: true
 
   profiles:
@@ -19,4 +27,17 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+logging:
+  level:
+    org:
+      springframework.web : DEBUG
+      springframework.security : DEBUG
+    com:
+      fasterxml.jackson : DEBUG
+
 
