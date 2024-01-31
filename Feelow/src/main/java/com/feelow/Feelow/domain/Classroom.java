@@ -1,7 +1,6 @@
 package com.feelow.Feelow.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +37,6 @@ public class Classroom implements Serializable {
     private List<Student> students;
 
     @OneToOne(mappedBy = "classroom", cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private Teacher teacher;
 }
