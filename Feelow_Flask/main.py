@@ -104,7 +104,7 @@ def chat_endpoint():
 
         senti_score = senti_score_json(input_text)
 
-        return jsonify({'input': input_text, 'response': response, 'history': global_history, 'sentiment': senti_score})
+        return jsonify({'input': input_text, 'response': response, 'history': global_history, 'senti_score': senti_score})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
