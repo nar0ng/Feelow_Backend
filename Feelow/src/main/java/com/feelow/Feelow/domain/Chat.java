@@ -38,7 +38,7 @@ public class Chat {
     private int conversationCount;
 
     @Column(name = "input_time")
-    private LocalDateTime inputTime;
+    private String inputTime;
 
     @ManyToOne(optional = false)
     @JsonBackReference
@@ -49,6 +49,7 @@ public class Chat {
     @PreUpdate
     public void prePersistAndUpdate() {
         this.date = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.inputTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 }
