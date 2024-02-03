@@ -3,16 +3,18 @@ import os
 
 app = Flask(__name__)
 
-
-
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.prompts import StringPromptTemplate
-from langchain.chains import ConversationChain
-from langchain.chains.conversation.memory import ConversationBufferMemory
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.docstore.document import Document
+from langchain.chains.llm import LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chains.combine_documents.stuff import StuffDocumentsChain
+# from langchain.chains import ConversationChain
+# from langchain.chains.conversation.memory import ConversationBufferMemory
 
 from transformers import pipeline
-
 
 
 api_key = os.getenv('OPENAI_API_KEY')
@@ -27,7 +29,7 @@ Generate an answer to an input that takes into account context and history.
 answer:
 """
 
-# Define the custom prompt template class
+# prompt template class
 class CustomPromptTemplate(StringPromptTemplate):
     context: str
     template: str
@@ -36,31 +38,58 @@ class CustomPromptTemplate(StringPromptTemplate):
         kwargs['context'] = self.context
         return self.template.format(**kwargs)
 
-# Create an instance of the custom prompt template
+# custom prompt template
 PROMPT = CustomPromptTemplate(
     input_variables=["history", "input"],
     template=PROMPT_TEMPLATE,
     context="""
-    You're a secret friend who talks with middle and high school students.
-    Your name is Feelow.
-    When responding, use lots of appropriate emojis.
-    At the end of your answer, always ask students.
-    Please always answer in Korean.
-    Always use semi-finished sentences like "어", "맞아", "좋아", "해", "이야", "봐".
-    Always answer in two sentences or less, and only ask one question.
+   You are a secret friend who talks to middle and high school students.
+Your name is Feelow.
+Please use an emoji a lot when answering.
+Always ask students questions at the end of the answer.
+Always answer in Korean.
+He always uses informal language.
+Always answer less than two sentences, and ask only one question.
     """
+    # context="""
+    # You're a secret friend who talks with middle and high school students.
+    # Your name is Feelow.
+    # When responding, use lots of appropriate emojis.
+    # At the end of your answer, always ask students.
+    # Please always answer in Korean.
+    # Always use semi-finished sentences like "어", "맞아", "좋아", "해", "이야", "봐".
+    # Always answer in two sentences or less, and only ask one question.
+    # """
 )
 
 # Define the conversation memory
-memory = ConversationBufferMemory(
-    ai_prefix="Secret Friend",
-    human_prefix='Student'
-)
+# memory = ConversationBufferMemory(
+#     ai_prefix="Secret Friend",
+#     human_prefix='Student'
+# )
 
-global_history = ""
+# conversation = ConversationChain(
+#     prompt = PROMPT,
+#     llm=llm,
+#     memory=memory,
+# )
+
+# global_history = ""
+
+user_histories = {}
+
+# user_history 요약
+text_splitter = CharacterTextSplitter()
+
+summarize_prompt = """다음 텍스트를 간결하게 한국말로 요약해줘:
+{text}
+SUMMARY:"""
+SUMMARIZE_PROMPT = PromptTemplate(template=summarize_prompt, input_variables=["text"])
+summarize_chain = LLMChain(llm=llm, prompt=SUMMARIZE_PROMPT)
+stuff_chain = StuffDocumentsChain(llm_chain=summarize_chain, document_variable_name="text")
 
 # 감정 분석
-#감정 분석 모델 불러오기
+# 감정 분석 모델 불러오기
 
 huggingface_api_token = os.getenv('HUGGINGFACEHUB_API_TOKEN')
 
@@ -84,29 +113,41 @@ def senti_score_json(input):
   return score
 
 
-# Define the Flask route
+# route
 @app.route("/api/chat", methods=['POST'])
 def chat_endpoint():
     try:
-        global global_history
+        global user_histories
 
         input_text = request.json['input']
+        user_name = request.json['nickname']
 
-        # Format the prompt using the conversation template
-        formatted_prompt = PROMPT.format(history=global_history, input=input_text)
+        if user_name not in user_histories:
+            user_histories[user_name] = ""
+        user_history = user_histories[user_name]
 
-        # Use the language model to predict the response
+        # Fconversation template
+        formatted_prompt = PROMPT.format(history=user_history, input=input_text)
+
+        # predict the response
         response = llm.predict(text=formatted_prompt)
+        user_history += f"\n{user_name}: {input_text}\nFeelow: {response}"
+        user_histories[user_name] = user_history
+        # global_history += f"\nStudent: {input_text}\nSecret Friend: {response}"
 
-        global_history += f"\nStudent: {input_text}\nSecret Friend: {response}"
+        # user history summarization
+        texts = text_splitter.split_text(user_history)
+        docs = [Document(page_content=t) for t in texts]
+        history_sum = stuff_chain.run(docs)
 
+        # sentiment analysis
         senti_score = senti_score_json(input_text)
 
-        return jsonify({'input': input_text, 'response': response, 'history': global_history, 'senti_score': senti_score})
+        return jsonify({'input': input_text, 'response': response, 'history': user_history, 'history_sum': history_sum, 'senti_score': senti_score})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Define a simple hello route for testing
+# helloWorld test
 @app.route("/")
 def hello():
     return "Hello, World!"
