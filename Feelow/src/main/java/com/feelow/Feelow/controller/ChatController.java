@@ -121,7 +121,7 @@ public class ChatController {
             @PathVariable Long memberId,
             @PathVariable String date
     ) {
-        List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
+        List<Chat> chatRecords = chatService.getChatRecords(memberId, date);
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
 }

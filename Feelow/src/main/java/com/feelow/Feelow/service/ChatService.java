@@ -15,13 +15,13 @@ public class ChatService {
 
     private final ChatRepository chatRepository;
 
-    public ResponseDto<List<Chat>> getChatRecords(Long memberId, String date) {
+    public List<Chat> getChatRecords(Long memberId, String date) {
         List<Chat> chatRecords = chatRepository.findByMemberMemberIdAndDate(memberId, date);
 
         if (chatRecords != null && !chatRecords.isEmpty()) {
-            return ResponseDto.successChat("채팅 레코드가 성공적으로 검색되었습니다", chatRecords);
+            return chatRecords;
         } else {
-            return ResponseDto.failed(HttpStatus.NOT_FOUND, "지정된 사용자 및 날짜에 대한 채팅 레코드가 없습니다", null);
+            return null;
         }
     }
 
