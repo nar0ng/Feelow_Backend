@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelow.Feelow.domain.Chat;
 import com.feelow.Feelow.domain.Member;
+import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.dto.ChatRequest;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
+import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.core.parameters.P;
@@ -23,14 +26,15 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/chat/{memberId}/{date}")
 public class ChatController {
 
-    @Autowired
-    private ChatService chatService;
+    private final ChatService chatService;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+
+    private final StudentRepository studentRepository;
 
     @PostMapping(produces = "application/json; charset=utf8")
     public ResponseEntity<String> Chat(@RequestBody ChatRequest chatRequest,
@@ -39,11 +43,14 @@ public class ChatController {
                                        ) {
 
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
-
+        Student student = studentRepository.findByMember_memberId(memberId).orElse(null);
         if (member == null) {
             // 학생이 존재하지 않는 경우 404 Not Found 반환
             return ResponseEntity.notFound().build();
         }
+
+        // ChatRequest에서 nickname 설정
+        chatRequest.setNickname(student != null ? student.getNickname() : "");
 
         String flaskUrl = "http://127.0.0.1:5001/api/chat";
         RestTemplate restTemplate = new RestTemplate();
@@ -64,6 +71,7 @@ public class ChatController {
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
                 String input = jsonNode.get("input").asText();
+                assert student != null;
                 String responseText = jsonNode.get("response").asText();
 
                 JsonNode sentimentNode = jsonNode.get("senti_score");
