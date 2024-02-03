@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class ChatRequest
 {
     private String input;
+    private String nickname;
+
 }
