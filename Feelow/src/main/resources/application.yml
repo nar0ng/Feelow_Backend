@@ -40,4 +40,16 @@ logging:
     com:
       fasterxml.jackson : DEBUG
 
+cloud:
+  aws:
+    s3:
+      bucket: feelow
+    credentials:
+      access-key: AKIARDQVELZJVHXDAXGG
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
