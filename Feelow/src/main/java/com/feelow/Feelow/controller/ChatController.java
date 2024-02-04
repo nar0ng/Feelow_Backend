@@ -5,43 +5,54 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelow.Feelow.domain.Chat;
 import com.feelow.Feelow.domain.Member;
+import com.feelow.Feelow.domain.Student;
 import com.feelow.Feelow.dto.ChatRequest;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
+import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/chat/{memberId}/{date}")
 public class ChatController {
 
-    @Autowired
-    private ChatService chatService;
+    private final ChatService chatService;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+
+    private final StudentRepository studentRepository;
 
     @PostMapping(produces = "application/json; charset=utf8")
     public ResponseEntity<String> Chat(@RequestBody ChatRequest chatRequest,
                                        @PathVariable Long memberId,
-                                       @PathVariable String date) {
+                                       @PathVariable String date
+                                       ) {
 
         Member member = memberRepository.findByMemberId(memberId).orElse(null);
-
+        Student student = studentRepository.findByMember_memberId(memberId).orElse(null);
         if (member == null) {
             // 학생이 존재하지 않는 경우 404 Not Found 반환
             return ResponseEntity.notFound().build();
         }
 
-        String flaskUrl = "http://0.0.0.0:5001/api/chat";
+        // ChatRequest에서 nickname 설정
+        chatRequest.setNickname(student != null ? student.getNickname() : "");
+
+        String flaskUrl = "http://127.0.0.1:5001/api/chat";
         RestTemplate restTemplate = new RestTemplate();
 
         // HTTP 헤더 설정
@@ -60,6 +71,7 @@ public class ChatController {
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
 
                 String input = jsonNode.get("input").asText();
+                assert student != null;
                 String responseText = jsonNode.get("response").asText();
 
                 JsonNode sentimentNode = jsonNode.get("senti_score");
@@ -67,23 +79,28 @@ public class ChatController {
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
 
-                    for (JsonNode node: sentimentNode){
+                    for (JsonNode node: sentimentNode) {
                         String label = node.get("label").asText();
 
-                        if ("positive".equals(label)){
+                        if ("positive".equals(label)) {
                             positiveScore = node.get("score").asDouble();
                             break;
                         }
                     }
 
-                    Chat chat = new Chat();
-                    chat.setPositiveScore(positiveScore);
-                    chat.setInput(input);
-                    chat.setResponse(responseText);
-                    chat.setDate(date);
-                    chat.setMember(member);
-                    chat.setInputTime(LocalDateTime.now());
-                    chatService.saveChat(chat);
+                        Chat chat = new Chat();
+                        chat.setPositiveScore(positiveScore);
+                        chat.setInput(input);
+                        chat.setResponse(responseText);
+
+                        LocalDateTime inputTime = LocalDateTime.now();
+                        System.out.println(inputTime);
+                        chat.setInputTime(String.valueOf(inputTime));
+                        chat.setMember(member);
+                        chat.setDate(date);
+
+                        chatService.saveChat(chat);
+
                 } else {
                     System.out.println("No sentiment information found");
                 }
@@ -104,7 +121,7 @@ public class ChatController {
             @PathVariable Long memberId,
             @PathVariable String date
     ) {
-        List<Chat> chatRecords = chatService.getChatRecords(memberId, date).getData();
+        List<Chat> chatRecords = chatService.getChatRecords(memberId, date);
         return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
     }
 }

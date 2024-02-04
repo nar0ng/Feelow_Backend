@@ -1,17 +1,15 @@
 package com.feelow.Feelow.dto;
 
+import com.feelow.Feelow.domain.Member;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatRequest
-{
-    private String input;
-    private String nickname;
-
+public class SignInResponseDto {
+    private String token;
+    private int exprTime;
+    private Member member;
 }

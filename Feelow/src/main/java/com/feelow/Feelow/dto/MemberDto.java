@@ -56,7 +56,7 @@ public class MemberDto {
                     .nickname(member.getNickname())
                     .email(member.getEmail())
                     .member_type(member.getMemberType())
-                    .teacherId(member.getTeacherId())
+                    .teacherId(member.getTeacher().getTeacherId())
                     .build();
         } else {
             // 그 외의 경우에는 기존의 로직 사용
