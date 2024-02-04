@@ -22,7 +22,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Entity(name="Member")
 @Table(name="Member")
-
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,9 +84,6 @@ public class Member {
     }
 
 
-    public Long getTeacherId() {
-        return (teacher != null) ? teacher.getTeacherId() : null;
-    }
 
     public Long getStudentId() {
         return (student != null) ? student.getStudentId() : null;

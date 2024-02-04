@@ -7,6 +7,7 @@ import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.dto.MemberResponseDto;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class AuthService {
         String email = dto.getEmail();
         String nickname = dto.getNickname();
 
+        // id 중복 확인
         try {
             // 이미 존재하는 ID인지 확인
             Optional<Member> existingMemberOptional = memberRepository.findMemberById(id);
