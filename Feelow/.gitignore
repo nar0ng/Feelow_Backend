@@ -42,7 +42,5 @@ application.yml
 
 ._Feelow
 
-# Spring Boot application.yml 파일
-
 .
 ._*
