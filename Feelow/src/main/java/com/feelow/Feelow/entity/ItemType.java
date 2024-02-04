@@ -17,7 +17,7 @@ public class ItemType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long typeId; // 1번 배게커버, 2번 악세서리, 3번 쿠폰
     @Column
-    private String title;
+    private String title; //엥
 
     public static ItemType createItemType(ItemTypeDto itemtypeDto){
         if(itemtypeDto.getTypeId() != null)
