@@ -20,7 +20,8 @@ public class Classroom implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long classroom_id;
+    @Column(name = "classroom_id")
+    private Long classroomId;
 
     @JsonProperty("school")
     private String school;
@@ -29,7 +30,7 @@ public class Classroom implements Serializable {
     private int grade;
 
     @JsonProperty("class_num")
-    private int class_num;
+    private int classNum;
 
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)

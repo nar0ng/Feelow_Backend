@@ -46,7 +46,7 @@ public class MyPageDto {
             Classroom classroom = member.getTeacher().getClassroom();
 
             return MyPageDto.builder()
-                    .teacherId(member.getTeacherId())
+                    .teacherId(member.getTeacher().getTeacherId())
                     .teacherName(member.getTeacher().getTeacherName())
                     .school(classroom.getSchool())
                     .grade(classroom.getGrade())

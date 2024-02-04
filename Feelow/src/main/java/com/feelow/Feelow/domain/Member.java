@@ -22,7 +22,6 @@ import java.util.Map;
 @NoArgsConstructor
 @Entity(name="Member")
 @Table(name="Member")
-
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
