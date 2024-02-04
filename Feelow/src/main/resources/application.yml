@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://feelow.cvqqak8scuix.ap-northeast-2.rds.amazonaws.com:3306/feelow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
-    password: Pebhyb-jocrat-widzy0
+    password: ${rds_pwd}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     jackson:
@@ -40,4 +40,16 @@ logging:
     com:
       fasterxml.jackson : DEBUG
 
+cloud:
+  aws:
+    s3:
+      bucket: feelow
+    credentials:
+      access-key: AKIARDQVELZJVHXDAXGG
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
 
