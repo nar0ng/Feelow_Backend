@@ -43,13 +43,14 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: feelow
+      bucket: ${Bname}
     credentials:
-      access-key: AKIARDQVELZJVHXDAXGG
-      secret-key: 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
+      access-key: ${s3_AK}
+      secret-key: ${s3_SAK}
     region:
       static: ap-northeast-2
       auto: false
     stack:
       auto: false
+
 
