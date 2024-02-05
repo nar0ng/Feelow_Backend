@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,8 +30,8 @@ public class Classroom implements Serializable {
     private int grade;
 
     @JsonProperty("class_num")
-    @Column(name = "class_num")
     private int classNum;
+
 
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     @JsonBackReference
