@@ -19,6 +19,11 @@ public class TestController {
         String response = sendGetRequest();
         return ResponseEntity.ok(response);
     }
+    @GetMapping
+    public ResponseEntity<String> test123() {
+        String response = sendGetRequest();
+        return ResponseEntity.ok(response);
+    }
 
     private String sendGetRequest() {
         RestTemplate restTemplate = new RestTemplate();
