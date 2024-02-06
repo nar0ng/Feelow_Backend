@@ -72,4 +72,3 @@ public class ChatService {
         return randomResonses[random.nextInt(randomResonses.length)];
         }
     }
-}
