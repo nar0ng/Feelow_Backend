@@ -143,7 +143,7 @@ def chat_endpoint():
         # sentiment analysis
         senti_score = senti_score_json(input_text)
 
-        return jsonify({'input': input_text, 'response': response, 'history': user_history, 'history_sum': history_sum, 'senti_score': senti_score})
+        return jsonify({'input': input_text, 'response': response, 'history_sum': history_sum, 'senti_score': senti_score})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
