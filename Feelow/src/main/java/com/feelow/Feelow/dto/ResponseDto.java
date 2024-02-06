@@ -27,7 +27,7 @@ public class ResponseDto<D> {
     }
 
     public static <D> ResponseDto<D> failed(String message, D data) {
-        return ResponseDto.set(false, HttpStatus.BAD_GATEWAY.value(), message, data);
+        return ResponseDto.set(false, HttpStatus.NOT_FOUND.value(), message, data);
     }
 
     public static <D> ResponseDto<D> failed(HttpStatus httpStatus, String message, D data) {
