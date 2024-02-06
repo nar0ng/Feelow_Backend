@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,6 @@ public class ChatService {
     @Transactional
     public ResponseDto<Chat> saveChat(Chat chat) {
         try {
-            // 같은 날짜에 이미 채팅이 있는지 확인
             List<Chat> existingChats = chatRepository.findByMemberMemberIdAndDate(chat.getMember().getMemberId(), chat.getDate());
 
             if (!existingChats.isEmpty()) {
@@ -47,12 +47,32 @@ public class ChatService {
                 return ResponseDto.success("Chat saved successfully", chat);
             } else {
                 chat.setConversationCount(1);
-                Chat savedChat = chatRepository.save(chat);
-                return ResponseDto.success("New chat saved successfully", savedChat);
+                chat.setResponse(getRandomResponse());
+                chat.setInput(null);
+
+                Chat firstChat = chatRepository.save(chat);
+
+                return ResponseDto.success("First chat saved successfully", firstChat);
             }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving chat", null);
+        }
+    }
+
+    private String getRandomResponse() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(3);
+
+        switch (randomNumber) {
+            case 0:
+                return "제일 좋아하는 색깔이 뭐야?";
+            case 1:
+                return "오늘 하루는 어땠어?";
+            case 2:
+                return "오늘 급식은 먹었어?";
+            default:
+                return "오늘 하루는 어땠어?";
         }
     }
 }
