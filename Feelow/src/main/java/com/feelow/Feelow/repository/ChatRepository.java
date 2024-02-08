@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
     List<Chat> findByMemberMemberIdAndDate(Long memberId, String date);
+
+    Member findByMemberMemberId(Long memberId);
 }
