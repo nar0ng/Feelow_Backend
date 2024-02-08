@@ -24,7 +24,7 @@ public class ChatService {
         if (chatRecords != null && !chatRecords.isEmpty()) {
             return chatRecords;
         } else {
-            Chat firstChat = creatFirstChat();
+            Chat firstChat = creatFirstChat(memberId);
             chatRepository.save(firstChat);
             return List.of(firstChat);
         }
@@ -78,8 +78,9 @@ public class ChatService {
                 .build();
     }
 
-    private Chat creatFirstChat() {
+    private Chat creatFirstChat(Long memberId) {
         return Chat.builder()
+                .member(chatRepository.findByMemberMemberId(memberId))
                 .conversationCount(1)
                 .input(null)
                 .inputTime(LocalDateTime.now())
