@@ -25,6 +25,7 @@ public class ChatService {
             return chatRecords;
         } else {
             Chat firstChat = creatFirstChat();
+            chatRepository.save(firstChat);
             return List.of(firstChat);
         }
     }
