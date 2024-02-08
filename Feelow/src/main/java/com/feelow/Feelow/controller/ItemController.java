@@ -1,4 +1,4 @@
-package com.feelow.Feelow.controllers;
+package com.feelow.Feelow.controller;
 
 import com.feelow.Feelow.dto.ItemDto;
 import com.feelow.Feelow.entity.Item;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/item")
+@RequestMapping("/api/item")
 public class ItemController {
 
     @Autowired

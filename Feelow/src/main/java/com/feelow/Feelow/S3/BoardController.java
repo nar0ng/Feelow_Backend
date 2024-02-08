@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 /*
+
 @RestController
-@RequestMapping("/boards")
+@RequestMapping("/upload")
 @RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
     private final FileService fileService;
     private final S3Uploader s3Uploader;
-
 
     @PostMapping("")
     public BaseResponse<PostBoardRes> create(
