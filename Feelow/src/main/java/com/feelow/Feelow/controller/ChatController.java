@@ -118,7 +118,7 @@ public class ChatController {
             return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
         }
         else {
-            return ResponseDto.failed("Chat records not found", null);
+            return ResponseDto.success("First", null);
         }
 
     }
