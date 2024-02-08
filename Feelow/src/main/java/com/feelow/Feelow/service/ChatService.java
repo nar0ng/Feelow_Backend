@@ -1,6 +1,7 @@
 package com.feelow.Feelow.service;
 
 import com.feelow.Feelow.domain.Chat;
+import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.ChatRepository;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,12 @@ public class ChatService {
             return chatRecords;
         } else {
             Chat firstChat = creatFirstChat(memberId);
-            chatRepository.save(firstChat);
+            if (!(firstChat == null)){
+                chatRepository.save(firstChat);
+            }
+            else {
+                return null;
+            }
             return List.of(firstChat);
         }
     }
@@ -79,13 +85,18 @@ public class ChatService {
     }
 
     private Chat creatFirstChat(Long memberId) {
-        return Chat.builder()
-                .member(chatRepository.findByMemberMemberId(memberId))
-                .conversationCount(1)
-                .input(null)
-                .inputTime(LocalDateTime.now())
-                .response(getRandomResponse())
-                .build();
+        Member member = chatRepository.findByMemberMemberId(memberId);
+        if (member != null) {
+            return Chat.builder()
+                    .member(member)
+                    .conversationCount(1)
+                    .input(null)
+                    .inputTime(LocalDateTime.now())
+                    .response(getRandomResponse())
+                    .build();
+        } else {
+            return null;
+        }
     }
 
 
