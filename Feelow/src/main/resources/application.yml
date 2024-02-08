@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://feelow.cvqqak8scuix.ap-northeast-2.rds.amazonaws.com:3306/feelow?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
-    password: ${rds_pwd}
+    password: ${RDS_PWD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     jackson:
@@ -43,7 +43,7 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: ${Bname}
+      bucket: ${BUCKET_NAME}
     credentials:
       access-key: ${s3_AK}
       secret-key: ${s3_SAK}
