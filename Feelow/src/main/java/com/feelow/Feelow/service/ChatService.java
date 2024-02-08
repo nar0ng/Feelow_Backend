@@ -4,6 +4,7 @@ import com.feelow.Feelow.domain.Chat;
 import com.feelow.Feelow.domain.Member;
 import com.feelow.Feelow.dto.ResponseDto;
 import com.feelow.Feelow.repository.ChatRepository;
+import com.feelow.Feelow.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -18,6 +20,7 @@ import java.util.Random;
 public class ChatService {
 
     private final ChatRepository chatRepository;
+    private final MemberRepository memberRepository;
 
     public List<Chat> getChatRecords(Long memberId, String date) {
         List<Chat> chatRecords = chatRepository.findByMemberMemberIdAndDate(memberId, date);
@@ -25,12 +28,12 @@ public class ChatService {
         if (chatRecords != null && !chatRecords.isEmpty()) {
             return chatRecords;
         } else {
-            Chat firstChat = creatFirstChat(memberId);
+            Chat firstChat = creatFirstChat(memberId, date);
             if (!(firstChat == null)){
                 chatRepository.save(firstChat);
             }
             else {
-                return null;
+                return List.of();
             }
             return List.of(firstChat);
         }
@@ -84,12 +87,14 @@ public class ChatService {
                 .build();
     }
 
-    private Chat creatFirstChat(Long memberId) {
-        Member member = chatRepository.findByMemberMemberId(memberId);
-        if (member != null) {
+    private Chat creatFirstChat(Long memberId, String date) {
+        Optional<Member> memberOptional = memberRepository.findByMemberId(memberId);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
             return Chat.builder()
                     .member(member)
                     .conversationCount(1)
+                    .date(date)
                     .input(null)
                     .inputTime(LocalDateTime.now())
                     .response(getRandomResponse())
@@ -98,7 +103,6 @@ public class ChatService {
             return null;
         }
     }
-
 
 
     private String getRandomResponse() {
