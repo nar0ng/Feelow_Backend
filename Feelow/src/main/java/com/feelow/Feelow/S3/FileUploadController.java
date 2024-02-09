@@ -20,14 +20,14 @@ public class FileUploadController {
 
     private final AmazonS3Client amazonS3Client;
 
-    @Value("${cloud.aws.s3.feelow}")
+    @Value("${cloud.aws.s3.bucket}")
     private String feelow;
 
     @PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String fileName=file.getOriginalFilename();
-            String fileUrl= "https://" + feelow + "/test" +fileName;
+            String fileUrl= "http://"+ "localhost:8080/"+"api/images/"+feelow+ "/" +fileName;
             ObjectMetadata metadata= new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
