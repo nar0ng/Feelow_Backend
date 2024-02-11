@@ -6,16 +6,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
     jackson:
-        serialization:
-          write-dates-as-timestamps: false
-          write-date-timestamps-as-nanoseconds: false
-          indent-output: true
-          write-char-array-as-string: true
-          fail-on-empty-beans: false
+      serialization:
+        write-dates-as-timestamps: false
+        write-date-timestamps-as-nanoseconds: false
+        indent-output: true
+        write-char-array-as-string: true
+        fail-on-empty-beans: false
 
   jpa:
     hibernate:
-        ddl-auto: update
+      ddl-auto: update
     show-sql: true
 
   profiles:
@@ -52,5 +52,3 @@ cloud:
       auto: false
     stack:
       auto: false
-
-
