@@ -1,9 +1,7 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
-import com.feelow.Feelow.domain.Classroom;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
-import com.feelow.Feelow.domain.Teacher;
+import com.feelow.Feelow.domain.entity.Classroom;
+import com.feelow.Feelow.domain.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

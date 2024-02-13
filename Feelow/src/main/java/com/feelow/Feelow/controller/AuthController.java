@@ -1,9 +1,7 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.MemberResponseDto;
-import com.feelow.Feelow.dto.ResponseDto;
-import com.feelow.Feelow.dto.SignInDto;
-import com.feelow.Feelow.dto.SignUpDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
+import com.feelow.Feelow.domain.dto.SignUpDto;
 import com.feelow.Feelow.jwt.MemberInfo;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.service.AuthService;

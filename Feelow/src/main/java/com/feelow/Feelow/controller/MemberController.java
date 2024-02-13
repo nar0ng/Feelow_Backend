@@ -1,6 +1,6 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.domain.Member;
+import com.feelow.Feelow.domain.entity.Member;
 import com.feelow.Feelow.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

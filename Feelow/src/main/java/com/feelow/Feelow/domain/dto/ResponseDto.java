@@ -1,6 +1,6 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
-import com.feelow.Feelow.domain.Chat;
+import com.feelow.Feelow.domain.entity.Chat;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 

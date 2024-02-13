@@ -1,15 +1,13 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.dto.ItemDto;
-import com.feelow.Feelow.dto.ItemTypeDto;
-import com.feelow.Feelow.entity.ItemType;
+import com.feelow.Feelow.domain.dto.ItemTypeDto;
+import com.feelow.Feelow.domain.entity.ItemType;
 import com.feelow.Feelow.repository.ItemTypeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

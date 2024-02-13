@@ -1,11 +1,11 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.domain.Classroom;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
-import com.feelow.Feelow.domain.Teacher;
-import com.feelow.Feelow.dto.ClassroomDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.entity.Classroom;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.entity.Student;
+import com.feelow.Feelow.domain.entity.Teacher;
+import com.feelow.Feelow.domain.dto.ClassroomDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.repository.ClassroomRepository;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor

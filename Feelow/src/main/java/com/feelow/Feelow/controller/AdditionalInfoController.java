@@ -1,8 +1,8 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.AdditionalInfoRequestDto;
-import com.feelow.Feelow.dto.MemberTypeUpdateDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.dto.AdditionalInfoRequestDto;
+import com.feelow.Feelow.domain.dto.MemberTypeUpdateDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.service.AdditionalInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

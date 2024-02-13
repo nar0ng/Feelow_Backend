@@ -1,8 +1,8 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.domain.Chat;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.entity.Chat;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.repository.ChatRepository;
 import com.feelow.Feelow.repository.MemberRepository;
 import lombok.AllArgsConstructor;

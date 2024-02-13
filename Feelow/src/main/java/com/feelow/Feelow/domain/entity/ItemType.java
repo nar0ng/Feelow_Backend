@@ -1,6 +1,6 @@
-package com.feelow.Feelow.entity;
+package com.feelow.Feelow.domain.entity;
 
-import com.feelow.Feelow.dto.ItemTypeDto;
+import com.feelow.Feelow.domain.dto.ItemTypeDto;
 import jakarta.persistence.*;
 import lombok.*;
 

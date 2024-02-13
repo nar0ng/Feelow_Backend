@@ -1,4 +1,4 @@
-package com.feelow.Feelow.entity;
+package com.feelow.Feelow.domain.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

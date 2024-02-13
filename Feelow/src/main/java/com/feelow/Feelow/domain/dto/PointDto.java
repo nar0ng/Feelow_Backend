@@ -1,7 +1,6 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
-import com.feelow.Feelow.entity.Point;
-import jakarta.persistence.Column;
+import com.feelow.Feelow.domain.entity.Point;
 import lombok.*;
 
 @Getter
