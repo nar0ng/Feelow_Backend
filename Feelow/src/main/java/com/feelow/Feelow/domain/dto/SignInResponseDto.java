@@ -1,5 +1,6 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
+import com.feelow.Feelow.domain.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpResponseDto {
+public class SignInResponseDto {
     private String token;
     private int exprTime;
+    private Member member;
 }

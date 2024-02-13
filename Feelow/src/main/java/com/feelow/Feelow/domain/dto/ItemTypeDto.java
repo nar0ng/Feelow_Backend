@@ -1,6 +1,5 @@
-package com.feelow.Feelow.dto;
-import com.feelow.Feelow.entity.Item;
-import com.feelow.Feelow.entity.ItemType;
+package com.feelow.Feelow.domain.dto;
+import com.feelow.Feelow.domain.entity.ItemType;
 import lombok.*;
 
 @Getter

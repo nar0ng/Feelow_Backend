@@ -1,17 +1,12 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.feelow.Feelow.domain.Classroom;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
-import jakarta.persistence.*;
+import com.feelow.Feelow.domain.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor

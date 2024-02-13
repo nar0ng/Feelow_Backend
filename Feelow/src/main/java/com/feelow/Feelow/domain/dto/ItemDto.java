@@ -1,10 +1,9 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
-import com.feelow.Feelow.entity.Item;
-import jakarta.persistence.Column;
+import com.feelow.Feelow.domain.entity.Item;
+
 import java.time.LocalDateTime;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Builder
 @NoArgsConstructor

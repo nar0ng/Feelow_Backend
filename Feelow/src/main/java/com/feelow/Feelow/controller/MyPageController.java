@@ -1,16 +1,10 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
-import com.feelow.Feelow.domain.Teacher;
-import com.feelow.Feelow.dto.MyPageDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.dto.MyPageDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.repository.MemberRepository;
-import com.feelow.Feelow.repository.StudentRepository;
-import com.feelow.Feelow.repository.TeacherRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;

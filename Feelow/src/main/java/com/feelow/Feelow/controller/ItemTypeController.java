@@ -1,8 +1,7 @@
 package com.feelow.Feelow.controllers;
 
-import com.feelow.Feelow.dto.ItemTypeDto;
-import com.feelow.Feelow.entity.ItemType;
-import com.feelow.Feelow.service.ItemService;
+import com.feelow.Feelow.domain.dto.ItemTypeDto;
+import com.feelow.Feelow.domain.entity.ItemType;
 import com.feelow.Feelow.service.ItemTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
