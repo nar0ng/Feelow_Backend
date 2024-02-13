@@ -27,7 +27,7 @@ public class S3ImageController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
             String fileName=file.getOriginalFilename();
-            String fileUrl= "https://"+"localhost:8080/"+"api/images/"+bucketName+"/"+fileName;
+            String fileUrl= "http://"+"localhost:8080/"+"api/images/"+bucketName+"/"+fileName;
             ObjectMetadata metadata= new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());

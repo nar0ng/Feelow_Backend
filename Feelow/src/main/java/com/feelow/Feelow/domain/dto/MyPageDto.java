@@ -17,6 +17,7 @@ public class MyPageDto {
     private String nickname;
     private int studentNumber;
     private String studentName;
+    private String characterImagePath;
 
     private Long teacherId;
     private String teacherName;
@@ -27,7 +28,7 @@ public class MyPageDto {
 
     public static MyPageDto fromMember(Member member){
 
-        if ("student".equals(member.getMemberType()) && member.getTeacher() != null) {
+        if ("student".equals(member.getMemberType())) {
             Classroom classroom = member.getStudent().getClassroom();
 
             return MyPageDto.builder()
@@ -38,9 +39,10 @@ public class MyPageDto {
                     .school(classroom.getSchool())
                     .grade(classroom.getGrade())
                     .classNum(classroom.getClassNum())
+                    .characterImagePath(member.getStudent().getCharacterImagePath())
                     .build();
 
-        } else if ("teacher".equals(member.getMemberType()) && member.getTeacher() != null) {
+        } else if ("teacher".equals(member.getMemberType())) {
             Classroom classroom = member.getTeacher().getClassroom();
 
             return MyPageDto.builder()
@@ -52,6 +54,6 @@ public class MyPageDto {
                     .build();
         }
 
-        return null;
+        return MyPageDto.builder().build();
     }
 }

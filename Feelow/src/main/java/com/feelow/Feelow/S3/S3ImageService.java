@@ -2,9 +2,11 @@ package com.feelow.Feelow.S3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class S3ImageService {
+
+    @Autowired
+    private HttpServletRequest request;
+
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -51,22 +58,22 @@ public class S3ImageService {
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(
                 new PutObjectRequest(bucketName, fileName, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)	// PublicRead 권한으로 업로드 됨
+                        .withCannedAcl(CannedAccessControlList.PublicRead)    // PublicRead 권한으로 업로드 됨
         );
         return amazonS3Client.getUrl(bucketName, fileName).toString();
     }
 
     private void removeNewFile(File targetFile) {
-        if(targetFile.delete()) {
+        if (targetFile.delete()) {
             log.info("파일이 삭제되었습니다.");
-        }else {
+        } else {
             log.info("파일이 삭제되지 못했습니다.");
         }
     }
 
-    private Optional<File> convert(MultipartFile file) throws  IOException {
+    private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(file.getOriginalFilename()); // 업로드한 파일의 이름
-        if(convertFile.createNewFile()) {
+        if (convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }
@@ -75,4 +82,19 @@ public class S3ImageService {
         return Optional.empty();
     }
 
+    public String getImageUrl(String key) {
+        // S3 버킷 URL과 이미지 경로를 조합하여 이미지 URL 생성
+        String serverAddress = getCurrentServerAddress();
+        String imageUrl = serverAddress +"api/images/"+bucketName+"/"+ key + ".png";
+        return imageUrl;
+    }
+
+    public String getCurrentServerAddress() {
+        String serverName = request.getServerName().toString(); // 현재 서버의 주소를 가져옴
+        int portNumber = request.getServerPort(); // 현재 서버의 포트 번호
+        String serverAddress =  "http://"+ serverName + ":" + portNumber + "/";
+        return serverAddress;
+    }
+
 }
+
