@@ -1,8 +1,8 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.AdditionalInfoRequestDto;
-import com.feelow.Feelow.dto.MemberTypeUpdateDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.dto.AdditionalInfoRequestDto;
+import com.feelow.Feelow.domain.dto.MemberTypeUpdateDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.service.AdditionalInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class AdditionalInfoController {
         this.additionalInfoService = additionalInfoService;
     }
 
-    @PutMapping("/{memberId}/member-type")
+    @PutMapping("/member-type/{memberId}")
     public ResponseEntity<ResponseDto<?>> updateMemberType(
             @PathVariable("memberId") Long memberId,
             @RequestBody MemberTypeUpdateDto memberTypeUpdateDto
@@ -35,7 +35,7 @@ public class AdditionalInfoController {
         }
     }
 
-    @PostMapping("/{memberId}/additional-info")
+    @PostMapping("/additional-info/{memberId}")
     public ResponseEntity<ResponseDto<?>> addAdditionalInfo(
             @PathVariable("memberId") Long memberId,
             @RequestBody AdditionalInfoRequestDto additionalInfoRequestDto

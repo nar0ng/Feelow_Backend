@@ -1,4 +1,4 @@
-package com.feelow.Feelow.controllers;
+package com.feelow.Feelow.controller;
 
 public class InventoryController {
 }

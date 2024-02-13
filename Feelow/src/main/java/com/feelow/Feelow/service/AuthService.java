@@ -1,13 +1,12 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.dto.MemberDto;
-import com.feelow.Feelow.dto.SignUpDto;
-import com.feelow.Feelow.dto.ResponseDto;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.dto.MemberResponseDto;
+import com.feelow.Feelow.domain.dto.MemberDto;
+import com.feelow.Feelow.domain.dto.SignUpDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.dto.MemberResponseDto;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.repository.MemberRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,7 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.MemberResponseDto;
-import com.feelow.Feelow.dto.ResponseDto;
-import com.feelow.Feelow.dto.SignInDto;
-import com.feelow.Feelow.dto.SignUpDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
+import com.feelow.Feelow.domain.dto.SignUpDto;
 import com.feelow.Feelow.jwt.MemberInfo;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.service.AuthService;
@@ -41,7 +39,7 @@ public class AuthController {
         return new ResponseEntity<>(signUpResponse, HttpStatus.valueOf(signUpResponse.getStatusCode()));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<MemberInfo> getMemberInfo(HttpServletRequest request) {
         // 헤더에서 JWT를 추출
         String token = extractTokenFromHeader(request);

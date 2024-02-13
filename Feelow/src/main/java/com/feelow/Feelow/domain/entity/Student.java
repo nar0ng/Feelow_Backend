@@ -1,4 +1,4 @@
-package com.feelow.Feelow.domain;
+package com.feelow.Feelow.domain.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
@@ -37,4 +37,7 @@ public class Student {
     @JsonBackReference
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = true)
     private Classroom classroom;
+
+    @Column(name = "character_image_path")
+    private String CharacterImagePath;
 }

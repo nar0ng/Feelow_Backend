@@ -1,6 +1,6 @@
 package com.feelow.Feelow.repository;
 
-import com.feelow.Feelow.domain.Student;
+import com.feelow.Feelow.domain.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.feelow.Feelow.domain;
+package com.feelow.Feelow.domain.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;

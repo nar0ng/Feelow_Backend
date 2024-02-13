@@ -1,11 +1,13 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.domain.Classroom;
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
-import com.feelow.Feelow.domain.Teacher;
-import com.feelow.Feelow.dto.AdditionalInfoRequestDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.S3.S3ImageController;
+import com.feelow.Feelow.S3.S3ImageService;
+import com.feelow.Feelow.domain.entity.Classroom;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.entity.Student;
+import com.feelow.Feelow.domain.entity.Teacher;
+import com.feelow.Feelow.domain.dto.AdditionalInfoRequestDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.repository.ClassroomRepository;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
@@ -32,6 +34,8 @@ public class AdditionalInfoService {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired S3ImageService s3ImageService;
 
     // 멤버 타입 업데이트
     @Transactional
@@ -97,6 +101,8 @@ public class AdditionalInfoService {
                         student.setStudentName(infoRequestDto.getName());
                         student.setClassroom(existingClassroom);
                         student.setMember(member);
+                        String imageUrl = s3ImageService.getImageUrl("feelow");
+                        student.setCharacterImagePath(imageUrl);
                         studentRepository.save(student);
 
                         return ResponseDto.success(HttpStatus.OK, "Student 정보가 저장되었습니다.", student);

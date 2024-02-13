@@ -1,8 +1,9 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -16,4 +17,5 @@ public class AdditionalInfoRequestDto {
     private String nickname;
     private int student_number;
     private String name;
+
 }

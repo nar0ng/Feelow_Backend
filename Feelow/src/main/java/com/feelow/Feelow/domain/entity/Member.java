@@ -1,10 +1,8 @@
-package com.feelow.Feelow.domain;
+package com.feelow.Feelow.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.feelow.Feelow.dto.SignUpDto;
-import com.sun.istack.NotNull;
+import com.feelow.Feelow.domain.dto.SignUpDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

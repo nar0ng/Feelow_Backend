@@ -1,7 +1,7 @@
 package com.feelow.Feelow.controller;
 
-import com.feelow.Feelow.dto.ClassroomDto;
-import com.feelow.Feelow.dto.ResponseDto;
+import com.feelow.Feelow.domain.dto.ClassroomDto;
+import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.service.ClassroomService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

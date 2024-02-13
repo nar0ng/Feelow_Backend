@@ -1,4 +1,4 @@
-package com.feelow.Feelow.dto;
+package com.feelow.Feelow.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.GeneratedValue;

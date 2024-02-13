@@ -1,8 +1,8 @@
 package com.feelow.Feelow.service;
 
 
-import com.feelow.Feelow.entity.Item;
-import com.feelow.Feelow.dto.ItemDto;
+import com.feelow.Feelow.domain.entity.Item;
+import com.feelow.Feelow.domain.dto.ItemDto;
 import com.feelow.Feelow.repository.ItemRepository;
 import com.feelow.Feelow.repository.ItemTypeRepository;
 
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

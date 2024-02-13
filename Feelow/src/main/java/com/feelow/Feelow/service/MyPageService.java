@@ -1,7 +1,7 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.domain.Member;
-import com.feelow.Feelow.domain.Student;
+import com.feelow.Feelow.domain.entity.Member;
+import com.feelow.Feelow.domain.entity.Student;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
 import lombok.AllArgsConstructor;
