@@ -20,7 +20,7 @@ public class AdditionalInfoController {
         this.additionalInfoService = additionalInfoService;
     }
 
-    @PutMapping("/{memberId}/member-type")
+    @PutMapping("/member-type/{memberId}")
     public ResponseEntity<ResponseDto<?>> updateMemberType(
             @PathVariable("memberId") Long memberId,
             @RequestBody MemberTypeUpdateDto memberTypeUpdateDto
@@ -35,7 +35,7 @@ public class AdditionalInfoController {
         }
     }
 
-    @PostMapping("/{memberId}/additional-info")
+    @PostMapping("/additional-info/{memberId}")
     public ResponseEntity<ResponseDto<?>> addAdditionalInfo(
             @PathVariable("memberId") Long memberId,
             @RequestBody AdditionalInfoRequestDto additionalInfoRequestDto

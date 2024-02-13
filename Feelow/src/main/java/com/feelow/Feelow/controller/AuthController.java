@@ -39,7 +39,7 @@ public class AuthController {
         return new ResponseEntity<>(signUpResponse, HttpStatus.valueOf(signUpResponse.getStatusCode()));
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<MemberInfo> getMemberInfo(HttpServletRequest request) {
         // 헤더에서 JWT를 추출
         String token = extractTokenFromHeader(request);
