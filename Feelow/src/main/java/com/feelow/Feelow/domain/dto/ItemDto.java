@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain.dto;
 
+import com.feelow.Feelow.domain.embedded.Money;
 import com.feelow.Feelow.domain.entity.Item;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class ItemDto {
     private String name; // 아이템 이름
     private Long typeId; // ItemType 외래키
     private String intro; // 아이템 소개
-    private Long price; // 아이템 가격
+    private Money price; // 아이템 가격
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 
