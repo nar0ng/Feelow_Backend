@@ -7,20 +7,23 @@ import com.feelow.Feelow.domain.entity.Member;
 import com.feelow.Feelow.domain.dto.MemberResponseDto;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.repository.MemberRepository;
+import com.feelow.Feelow.repository.StudentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AuthService {
 
-    @Autowired
-    MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    @Autowired
-    TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     public ResponseDto<?> signUp(SignUpDto dto) {
         Long id = dto.getId();
@@ -50,6 +53,7 @@ public class AuthService {
 
                 // 갱신된 토큰 및 만료 시간을 응답 DTO에 담아 반환
                 MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, MemberDto.getMember(existingMember));
+
                 return ResponseDto.success(HttpStatus.OK, "Already existing member", memberResponseDto);
             } else {
 
@@ -74,9 +78,8 @@ public class AuthService {
             }
         } catch (Exception e) {
             // 기타 예외 처리
+            System.out.println("예외 발생");
             return ResponseDto.failed(HttpStatus.BAD_GATEWAY, "Error", null);
         }
-
-
     }
 }
