@@ -15,6 +15,16 @@ public class MemberResponseDto {
     // 리프레쉬 토큰
     private String refreshToken;
 
+    private String nickname;
+
+    private String email;
+
+    public MemberResponseDto(MemberDto member){
+        this.email = member.getEmail();
+        this.nickname = member.getNickname();
+    }
+
+
     // 만료 시간
     private int exprTime;
     private MemberDto member;
