@@ -52,7 +52,7 @@ public class AuthService {
                 }
 
                 // 갱신된 토큰 및 만료 시간을 응답 DTO에 담아 반환
-                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, exprTime, MemberDto.getMember(existingMember));
+                MemberResponseDto memberResponseDto = new MemberResponseDto(accessToken, refreshToken, nickname, email, exprTime, MemberDto.getMember(existingMember));
                 return ResponseDto.success(HttpStatus.OK, "Already existing member", memberResponseDto);
             } else {
 
