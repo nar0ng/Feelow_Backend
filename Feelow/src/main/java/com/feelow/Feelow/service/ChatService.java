@@ -46,7 +46,7 @@ public class ChatService {
                 ChatResponseDto chatResponseDto = ChatResponseDto.builder()
                         .input(firstChat.getInput())
                         .response(firstChat.getResponse())
-                        .point(firstChat.getMember().getStudent().getPoint())
+                        .point(firstChat.getMember().getStudent().getPoint() + 5)
                         .build();
                 chatResponseDtos.add(chatResponseDto);
             }
@@ -68,10 +68,10 @@ public class ChatService {
                 Chat newChat = createNewChat(lastChat, chat);
                 chatRepository.save(newChat);
 
-                if ((lastChat.getConversationCount() + 1) % 3 == 0){
+                if (((lastChat.getConversationCount()) + 1) % 10 == 0){
                     Member member = lastChat.getMember();
                     Student student = member.getStudent();
-                    student.setPoint(student.getPoint() + 1);
+                    student.setPoint(student.getPoint() + 5);
                     studentRepository.save(student);
                 }
                 int point = newChat.getMember().getStudent().getPoint();
@@ -126,7 +126,6 @@ public class ChatService {
                 .date(chat.getDate())
                 .input(null)
                 .inputTime(LocalDateTime.now())
-                .member(chat.getMember())
                 .response(getRandomResponse())
                 .build();
     }
@@ -135,6 +134,10 @@ public class ChatService {
         Optional<Member> memberOptional = memberRepository.findByMemberId(memberId);
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
+            Student student = member.getStudent();
+            student.setPoint(student.getPoint() + 5);
+            studentRepository.save(student);
+
             return Chat.builder()
                     .member(member)
                     .conversationCount(1)
