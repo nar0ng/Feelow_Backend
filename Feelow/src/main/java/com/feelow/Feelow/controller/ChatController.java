@@ -3,6 +3,7 @@ package com.feelow.Feelow.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelow.Feelow.domain.dto.ChatResponseDto;
 import com.feelow.Feelow.domain.entity.Chat;
 import com.feelow.Feelow.domain.entity.Member;
 import com.feelow.Feelow.domain.entity.Student;
@@ -30,7 +31,7 @@ public class ChatController {
     private final StudentRepository studentRepository;
 
     @PostMapping(produces = "application/json; charset=utf8")
-    public ResponseEntity<String> Chat(@RequestBody ChatRequest chatRequest,
+    public ResponseDto<ChatResponseDto> Chat(@RequestBody ChatRequest chatRequest,
                                        @PathVariable Long memberId,
                                        @PathVariable String date
     ) {
@@ -40,7 +41,7 @@ public class ChatController {
 
         // 학생이 존재하지 않는 경우
         if (member == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseDto.failed(HttpStatus.NOT_FOUND, "Student not found", null);
         }
 
         // ChatRequest에서 nickname 설정
@@ -70,6 +71,7 @@ public class ChatController {
 
                 JsonNode sentimentNode = jsonNode.get("senti_score");
 
+                ChatResponseDto chatResponseDto = null;
                 if (sentimentNode.isArray() && sentimentNode.size() > 0) {
                     double positiveScore = 0.0;
 
@@ -82,6 +84,7 @@ public class ChatController {
                         }
                     }
 
+
                     Chat chat = Chat.builder()
                             .positiveScore(positiveScore)
                             .input(input)
@@ -91,31 +94,39 @@ public class ChatController {
                             .date(date)
                             .build();
 
+                    int point = chat.getMember().getStudent().getPoint();
+
+                    chatResponseDto = ChatResponseDto.builder()
+                            .input(input)
+                            .response(chatbotResponse)
+                            .point(point)
+                            .build();
+
                     chatService.saveChat(chat);
 
                 } else {
                     System.out.println("No sentiment information found");
                 }
-                return response;
+                return ResponseDto.success("Get chat from Flask successfully", chatResponseDto);
             } else {
                 // Flask 서버 응답이 성공하지 않은 경우
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Flask server Error", null);
             }
         } catch (JsonProcessingException e) {
             // JSON 매핑 중 오류 발생 시
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Json mapping Error", null);
         }
     }
 
     @GetMapping("")
-    public ResponseDto<List<Chat>> getChatRecords(
+    public ResponseDto<List<ChatResponseDto>> getChatRecords(
             @PathVariable Long memberId,
             @PathVariable String date
     ) {
-        List<Chat> chatRecords = chatService.getChatRecords(memberId, date);
-
+        List<ChatResponseDto> chatRecords = chatService.getChatRecords(memberId, date);
+        System.out.println(chatRecords);
         if (!(chatRecords == null)){
-            return ResponseDto.successChat("Chat records retrieved successfully", chatRecords);
+            return ResponseDto.success("Chat records retrieved successfully", chatRecords);
         }
         else {
             return ResponseDto.success("First", null);

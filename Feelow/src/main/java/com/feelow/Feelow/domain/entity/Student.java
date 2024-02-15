@@ -41,5 +41,7 @@ public class Student {
     @Column(name = "character_image_path")
     private String CharacterImagePath;
 
-    
+    @Column(name = "point")
+    private int point;
+
 }
