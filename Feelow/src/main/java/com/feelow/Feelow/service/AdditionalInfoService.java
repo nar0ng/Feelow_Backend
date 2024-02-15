@@ -103,6 +103,7 @@ public class AdditionalInfoService {
                         student.setMember(member);
                         String imageUrl = s3ImageService.getImageUrl("feelow");
                         student.setCharacterImagePath(imageUrl);
+                        student.setPoint(0);
                         studentRepository.save(student);
 
                         return ResponseDto.success(HttpStatus.OK, "Student 정보가 저장되었습니다.", student);

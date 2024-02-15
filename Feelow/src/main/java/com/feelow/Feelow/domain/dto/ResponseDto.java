@@ -17,7 +17,6 @@ public class ResponseDto<D> {
     private String message;
     private D data;
 
-
     public static <D> ResponseDto<D> success(String message, D data) {
         return ResponseDto.set(true, HttpStatus.OK.value(), message, data);
     }
@@ -37,5 +36,4 @@ public class ResponseDto<D> {
     public static ResponseDto<List<Chat>> successChat(String message, List<Chat> data) {
         return ResponseDto.set(true, HttpStatus.OK.value(), message, data);
     }
-
 }
