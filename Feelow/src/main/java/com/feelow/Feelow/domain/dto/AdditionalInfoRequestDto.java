@@ -18,4 +18,6 @@ public class AdditionalInfoRequestDto {
     private int student_number;
     private String name;
 
+    private MultipartFile file;
+
 }

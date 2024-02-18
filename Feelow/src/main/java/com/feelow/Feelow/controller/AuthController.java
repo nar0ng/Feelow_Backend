@@ -1,12 +1,13 @@
 package com.feelow.Feelow.controller;
 
+
 import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.domain.dto.SignUpDto;
 import com.feelow.Feelow.jwt.MemberInfo;
 import com.feelow.Feelow.jwt.TokenProvider;
 import com.feelow.Feelow.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    AuthService authService;
 
-    @Autowired
-    private TokenProvider tokenProvider;
+    private final AuthService authService;
+
+    private final TokenProvider tokenProvider;
 
     // 사용자 가입 / 로그인 요청 처리
     @PostMapping("/sign-up")
