@@ -1,7 +1,7 @@
 package com.feelow.Feelow.config;
 
 import com.feelow.Feelow.filter.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -13,10 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig {
 
-    @Autowired
-    JwtAuthenticationFilter jwtAuthencationFilter;
+
+    private final JwtAuthenticationFilter jwtAuthencationFilter;
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws  Exception{
@@ -31,8 +32,8 @@ public class WebSecurityConfig {
                 .sessionManagement((sessionManagement) ->            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/chat/**", "/api/main/**", "/api/mypage/**", "/api/images/**").permitAll().anyRequest().authenticated());
-
-        httpSecurity.addFilterBefore(jwtAuthencationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthencationFilter, UsernamePasswordAuthenticationFilter.class)
+                ;
 
         return httpSecurity.build();
     }

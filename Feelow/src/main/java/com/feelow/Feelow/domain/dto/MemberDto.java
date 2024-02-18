@@ -54,7 +54,6 @@ public class MemberDto {
                     .teacherId(member.getTeacher().getTeacherId())
                     .build();
         } else {
-            // 그 외의 경우에는 기존의 로직 사용
             return MemberDto.builder()
                     .memberId(member.getMemberId())
                     .id(member.getId())

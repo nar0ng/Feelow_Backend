@@ -1,9 +1,6 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.domain.entity.Classroom;
-import com.feelow.Feelow.domain.entity.Member;
-import com.feelow.Feelow.domain.entity.Student;
-import com.feelow.Feelow.domain.entity.Teacher;
+import com.feelow.Feelow.domain.entity.*;
 import com.feelow.Feelow.domain.dto.ClassroomDto;
 import com.feelow.Feelow.domain.dto.ResponseDto;
 import com.feelow.Feelow.repository.ClassroomRepository;
@@ -65,4 +62,23 @@ public class ClassroomService {
             return ResponseDto.failed(HttpStatus.NOT_FOUND, "Member not found", null);
     }
     }
+
+    public boolean isApproved(Long memberId){
+        Member member = memberRepository.findByMemberId(memberId).orElse(null);
+
+        if (member != null){
+            ApprovalStatus approvalStatus = member.getTeacher().getApprovalStatus();
+
+            switch (approvalStatus){
+                case APPROVED:
+                    return true;
+                case PENDING:
+                case REJECTED:
+                default:
+                    return false;
+            }
+        }
+        return false; // member가 null인 경우에도 승인되지 않은 것으로 처리
+    }
+
 }

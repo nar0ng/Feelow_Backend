@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
@@ -35,16 +37,17 @@ public class AdditionalInfoController {
         }
     }
 
-    @PostMapping("/additional-info/{memberId}")
-    public ResponseEntity<ResponseDto<?>> addAdditionalInfo(
+    @PostMapping(value = "/additional-info/{memberId}", consumes = "multipart/form-data")
+    public ResponseDto<?> addAdditionalInfo(
             @PathVariable("memberId") Long memberId,
-            @RequestBody AdditionalInfoRequestDto additionalInfoRequestDto
+            @RequestPart AdditionalInfoRequestDto additionalInfoRequestDto,
+            @RequestPart("file") MultipartFile file
     ) {
         try {
-            ResponseDto<?> addAdditionalInfoResponse = additionalInfoService.addAdditionalInfo(memberId, additionalInfoRequestDto);
-            return new ResponseEntity<>(addAdditionalInfoResponse, HttpStatus.valueOf(addAdditionalInfoResponse.getStatusCode()));
+            ResponseDto<?> addAdditionalInfoResponse = additionalInfoService.addAdditionalInfo(memberId, additionalInfoRequestDto, file);
+            return ResponseDto.success(HttpStatus.OK, "Additional info successfully", addAdditionalInfoResponse);
         } catch (Exception e) {
-            return new ResponseEntity<>(ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Additional 정보 추가에 실패했습니다.", null), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Additional info failed", null);
         }
     }
 
