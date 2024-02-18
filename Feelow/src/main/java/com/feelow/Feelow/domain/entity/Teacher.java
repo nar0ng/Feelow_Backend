@@ -32,4 +32,11 @@ public class Teacher {
     @OneToOne
     @JoinColumn(name = "classroom_id", referencedColumnName = "classroom_id", insertable = true, updatable = false)
     private Classroom classroom;
+
+    @Column(name = "certification_file_path")
+    private String certificationFilePath;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status")
+    private ApprovalStatus approvalStatus;
 }
