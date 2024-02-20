@@ -23,8 +23,10 @@ public class ItemType {
     private String title;
 
     public static ItemType createItemType(ItemTypeDto itemtypeDto){
+        /*
         if(itemtypeDto.getTypeId() != null)
             throw new IllegalArgumentException("생성 실패! id가 없어야 합니다.");
+         */
         return new ItemType(
                 itemtypeDto.getTypeId(),
                 itemtypeDto.getTitle()

@@ -1,4 +1,4 @@
-package com.feelow.Feelow.controllers;
+package com.feelow.Feelow.controller;
 
 import com.feelow.Feelow.domain.dto.ItemTypeDto;
 import com.feelow.Feelow.domain.entity.ItemType;
