@@ -1,6 +1,5 @@
 package com.feelow.Feelow.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.domain.dto.ItemCreateRequest;
 import com.feelow.Feelow.domain.embedded.Money;
 import jakarta.persistence.*;
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Builder
 @Table(name = "Item")
