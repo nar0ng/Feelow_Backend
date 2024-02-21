@@ -9,6 +9,7 @@ import com.feelow.Feelow.domain.entity.Member;
 import com.feelow.Feelow.domain.entity.Student;
 import com.feelow.Feelow.domain.dto.ChatRequest;
 import com.feelow.Feelow.domain.dto.ResponseDto;
+import com.feelow.Feelow.repository.ChatRepository;
 import com.feelow.Feelow.repository.MemberRepository;
 import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.service.ChatService;
@@ -23,14 +24,15 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/chat/{memberId}/{date}")
+@RequestMapping("/api/chat")
 public class ChatController {
 
     private final ChatService chatService;
     private final MemberRepository memberRepository;
     private final StudentRepository studentRepository;
+    private final ChatRepository chatRepository;
 
-    @PostMapping(produces = "application/json; charset=utf8")
+    @PostMapping(value = "/{memberId}/{date}", produces = "application/json; charset=utf8")
     public ResponseDto<ChatResponseDto> Chat(@RequestBody ChatRequest chatRequest,
                                        @PathVariable Long memberId,
                                        @PathVariable String date
@@ -118,7 +120,7 @@ public class ChatController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping("/{memberId}/{date}")
     public ResponseDto<List<ChatResponseDto>> getChatRecords(
             @PathVariable Long memberId,
             @PathVariable String date
@@ -132,5 +134,12 @@ public class ChatController {
             return ResponseDto.success("First", null);
         }
 
+    }
+
+    @GetMapping("/{memberID}/{year}/{month}")
+    public List<Chat> getChatByYearAndMonth(@PathVariable Long memberId, @PathVariable int year, @PathVariable int month){
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime endDate = startDate.plusMonths(1).minusNanos(1);
+        return chatRepository.findByMemberIdAndInputTimeBetween(memberId, startDate, endDate);
     }
 }
