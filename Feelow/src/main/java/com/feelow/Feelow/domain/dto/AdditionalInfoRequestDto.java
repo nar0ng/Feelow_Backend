@@ -17,7 +17,4 @@ public class AdditionalInfoRequestDto {
     private String nickname;
     private int student_number;
     private String name;
-
-    private MultipartFile file;
-
 }

@@ -1,6 +1,5 @@
 package com.feelow.Feelow.service;
 
-import com.feelow.Feelow.S3.S3ImageController;
 import com.feelow.Feelow.S3.S3ImageService;
 import com.feelow.Feelow.domain.entity.*;
 import com.feelow.Feelow.domain.dto.AdditionalInfoRequestDto;
@@ -11,10 +10,8 @@ import com.feelow.Feelow.repository.StudentRepository;
 import com.feelow.Feelow.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.Optional;
@@ -56,7 +53,7 @@ public class AdditionalInfoService {
 
     // 학생 / 선생님 추가 정보 입력
     @Transactional
-    public ResponseDto<?> addAdditionalInfo(Long member_id, AdditionalInfoRequestDto infoRequestDto, MultipartFile file) {
+    public ResponseDto<?> addAdditionalInfo(Long member_id, AdditionalInfoRequestDto infoRequestDto) {
         try {
             Optional<Member> optionalMember = memberRepository.findByMemberId(member_id);
 
@@ -113,15 +110,12 @@ public class AdditionalInfoService {
                     if (existingTeacher.isPresent()) {
                         return ResponseDto.failed(HttpStatus.CONFLICT,"이미 저장된 선생님입니다.", null);
                     } else {
-                        String fileUrl = s3ImageService.upload(file, "feelow");
-                        System.out.println(fileUrl);
                         // teacher 정보 저장
                         Teacher teacher = Teacher.builder()
                                 .teacherName(infoRequestDto.getName())
                                 .classroom(existingClassroom)
                                 .member(member)
                                 .approvalStatus(ApprovalStatus.PENDING)
-                                .certificationFilePath(fileUrl)
                                 .build();
 
                         teacherRepository.save(teacher);
