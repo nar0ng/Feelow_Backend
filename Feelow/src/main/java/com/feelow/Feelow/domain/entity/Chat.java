@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -39,6 +41,12 @@ public class Chat {
 
     @Column(name = "input_time")
     private LocalDateTime inputTime;
+
+    @Column(name = "history_sum")
+    private String historySum;
+
+    @Column(name = "today_sentence")
+    private String todaySentence;
 
     @ManyToOne(optional = false)
     @JsonBackReference

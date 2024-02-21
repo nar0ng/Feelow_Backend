@@ -33,6 +33,7 @@ public class Item {
     private String intro;
 
 
+    @Column(nullable = false)
     @JsonProperty("price")
     private Money price;
 
