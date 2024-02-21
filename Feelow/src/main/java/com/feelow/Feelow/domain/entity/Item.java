@@ -32,6 +32,7 @@ public class Item {
     @JsonProperty("intro")
     private String intro;
 
+    @Column(nullable = false)
     @JsonProperty("price")
     private Money price;
 

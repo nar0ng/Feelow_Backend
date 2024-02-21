@@ -6,7 +6,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.util.IOUtils;
+import com.feelow.Feelow.domain.entity.Teacher;
+import com.feelow.Feelow.repository.TeacherRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,8 @@ public class S3ImageService {
     private HttpServletRequest request;
 
     private final AmazonS3Client amazonS3Client;
+
+    private final TeacherRepository teacherRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -89,6 +94,12 @@ public class S3ImageService {
         return imageUrl;
     }
 
+    public String getFile(String key) {
+        String serverAddress = getCurrentServerAddress();
+        String fileUrl = serverAddress +"api/file/"+bucketName+"/"+ key + ".png";
+        return fileUrl;
+    }
+
     public String getCurrentServerAddress() {
         String serverName = request.getServerName().toString(); // 현재 서버의 주소를 가져옴
         int portNumber = request.getServerPort(); // 현재 서버의 포트 번호
@@ -96,5 +107,19 @@ public class S3ImageService {
         return serverAddress;
     }
 
-}
+    // S3ImageService 클래스에 추가
+    @Transactional
+    public String saveFilePathForTeacher(Long memberId, String filePath) {
+        Optional<Teacher> teacherOptional = teacherRepository.findByMember_memberId(memberId);
+        if (teacherOptional.isPresent()) {
+            Teacher teacher = teacherOptional.get();
+            teacher.setCertificationFilePath(filePath);
+            teacherRepository.save(teacher);
+            return "File path saved successfully for teacher with ID: " + memberId;
+        } else {
+            return "Teacher with ID " + memberId + " not found!";
+        }
+    }
 
+
+}

@@ -37,14 +37,13 @@ public class AdditionalInfoController {
         }
     }
 
-    @PostMapping(value = "/additional-info/{memberId}", consumes = "multipart/form-data")
+    @PostMapping(value = "/additional-info/{memberId}")
     public ResponseDto<?> addAdditionalInfo(
             @PathVariable("memberId") Long memberId,
-            @RequestPart AdditionalInfoRequestDto additionalInfoRequestDto,
-            @RequestPart("file") MultipartFile file
+            @RequestBody AdditionalInfoRequestDto additionalInfoRequestDto
     ) {
         try {
-            ResponseDto<?> addAdditionalInfoResponse = additionalInfoService.addAdditionalInfo(memberId, additionalInfoRequestDto, file);
+            ResponseDto<?> addAdditionalInfoResponse = additionalInfoService.addAdditionalInfo(memberId, additionalInfoRequestDto);
             return ResponseDto.success(HttpStatus.OK, "Additional info successfully", addAdditionalInfoResponse);
         } catch (Exception e) {
             return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Additional info failed", null);
