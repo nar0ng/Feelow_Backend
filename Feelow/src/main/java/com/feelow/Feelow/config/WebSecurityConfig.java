@@ -31,7 +31,7 @@ public class WebSecurityConfig {
                 // 세션 기반 인증
                 .sessionManagement((sessionManagement) ->            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/chat/**", "/api/main/**", "/api/mypage/**", "/api/images/**", "/api/additional-info/** ").permitAll().anyRequest().authenticated());
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers("/", "/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/chat/**", "/api/main/**", "/api/mypage/**", "/api/images/**", "/api/item/**", "/api/itemtype/**").permitAll().anyRequest().authenticated());
         httpSecurity.addFilterBefore(jwtAuthencationFilter, UsernamePasswordAuthenticationFilter.class)
                 ;
 

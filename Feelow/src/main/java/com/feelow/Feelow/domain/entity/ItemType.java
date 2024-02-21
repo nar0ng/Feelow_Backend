@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.feelow.Feelow.domain.dto.ItemTypeDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,9 +15,11 @@ import lombok.*;
 public class ItemType {
 
     @Id
+    @JsonProperty("typeId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long typeId; // 1번 배게커버, 2번 악세서리, 3번 쿠폰
-    @Column
+
+    @JsonProperty("title")
     private String title;
 
     public static ItemType createItemType(ItemTypeDto itemtypeDto){
