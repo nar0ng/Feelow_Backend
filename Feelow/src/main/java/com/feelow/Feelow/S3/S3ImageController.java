@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/images")
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class S3ImageController {
     public ResponseEntity<byte[]> getImage(@PathVariable String bucketName, @PathVariable String key) {
         try {
             byte[] imageBytes = s3ImageService.getImageBytes(bucketName, key);
-            return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
+            return ResponseEntity.ok().contentType(APPLICATION_OCTET_STREAM).body(imageBytes);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Table(name = "Item")
 @Builder
-@Entity
+@Table(name = "Item")
+@Entity(name = "Item")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,28 +19,30 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class Item {
 
     @Id
+    @JsonProperty("itemId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "itemId", unique = true, nullable = false)
     private Long itemId;
 
-    @Column(length =50, nullable = false)
+    @JsonProperty("name")
     private String name;
 
-    @Column(nullable = false)
+    @JsonProperty("typeId")
     private Long typeId;
 
-    @Column(length = 200, nullable = false)
+    @JsonProperty("intro")
     private String intro;
 
+
     @Column(nullable = false)
+    @JsonProperty("price")
     private Money price;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @JsonProperty("created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
+    @JsonProperty("updated_at")
     private LocalDateTime updateAt;
 
 
