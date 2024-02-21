@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-@NoArgsConstructor
 @Embeddable
 @Getter
 public class Money {
@@ -15,6 +14,7 @@ public class Money {
     public Money(int value){
         this.value = value;
     }
+    public Money(){this.value = 100;}
 
     public static Money of(Integer value){
         return new Money(value);
