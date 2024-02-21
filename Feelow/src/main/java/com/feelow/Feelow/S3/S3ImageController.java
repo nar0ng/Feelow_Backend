@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/images")
 @RequiredArgsConstructor
