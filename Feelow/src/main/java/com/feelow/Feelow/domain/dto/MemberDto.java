@@ -1,5 +1,6 @@
 package com.feelow.Feelow.domain.dto;
 
+import com.feelow.Feelow.domain.entity.ApprovalStatus;
 import com.feelow.Feelow.domain.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,6 +31,8 @@ public class MemberDto {
 
     private Long teacherId;
 
+    private ApprovalStatus approvalStatus;
+
     public static MemberDto getMember(Member member) {
         if ("student".equals(member.getMemberType()) && member.getStudent() != null) {
             // member_type이 student이고 Student 정보가 있을 경우 studentId를 사용
@@ -52,6 +55,7 @@ public class MemberDto {
                     .email(member.getEmail())
                     .member_type(member.getMemberType())
                     .teacherId(member.getTeacher().getTeacherId())
+                    .approvalStatus(member.getTeacher().getApprovalStatus())
                     .build();
         } else {
             return MemberDto.builder()
