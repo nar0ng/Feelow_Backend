@@ -1,8 +1,10 @@
 package com.feelow.Feelow.controller;
 
 import com.feelow.Feelow.domain.dto.AdditionalInfoRequestDto;
+import com.feelow.Feelow.domain.dto.CalendarDto;
 import com.feelow.Feelow.domain.dto.MemberTypeUpdateDto;
 import com.feelow.Feelow.domain.dto.ResponseDto;
+import com.feelow.Feelow.domain.entity.Chat;
 import com.feelow.Feelow.service.AdditionalInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,12 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api")
 public class AdditionalInfoController {
 
     private final AdditionalInfoService additionalInfoService;
+
 
     @Autowired
     public AdditionalInfoController(AdditionalInfoService additionalInfoService) {
@@ -49,6 +54,7 @@ public class AdditionalInfoController {
             return ResponseDto.failed(HttpStatus.INTERNAL_SERVER_ERROR, "Additional info failed", null);
         }
     }
+
 
 
 }

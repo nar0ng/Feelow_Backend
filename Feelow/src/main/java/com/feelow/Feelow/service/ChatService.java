@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class ChatService {
                     .input(chatRecord.getInput())
                     .response(chatRecord.getResponse())
                     .point(chatRecord.getMember().getStudent().getPoint())
+                    .localDate(chatRecord.getLocalDate())
                     .build();
             chatResponseDtos.add(chatResponseDto);
         }
@@ -74,12 +76,12 @@ public class ChatService {
                     student.setPoint(student.getPoint() + 5);
                     studentRepository.save(student);
                 }
-                int point = newChat.getMember().getStudent().getPoint();
+
                 ChatResponseDto chatResponseDto = ChatResponseDto.builder()
                         .input(newChat.getInput())
                         .response(newChat.getInput())
                         .response(newChat.getResponse())
-                        .point(point)
+                        .point(newChat.getMember().getStudent().getPoint())
                         .build();
 
                 System.out.println(chatResponseDto);
@@ -115,6 +117,9 @@ public class ChatService {
                 .inputTime(chat.getInputTime())
                 .positiveScore(chat.getPositiveScore())
                 .response(chat.getResponse())
+                .localDate(chat.getLocalDate())
+                .historySum(chat.getHistorySum())
+                .todaySentence(chat.getTodaySentence())
                 .build();
     }
 
@@ -127,6 +132,7 @@ public class ChatService {
                 .input(null)
                 .inputTime(LocalDateTime.now())
                 .response(getRandomResponse())
+                .localDate(LocalDate.now())
                 .build();
     }
 
@@ -145,6 +151,7 @@ public class ChatService {
                     .input(null)
                     .inputTime(LocalDateTime.now())
                     .response(getRandomResponse())
+                    .localDate(LocalDate.now())
                     .build();
         } else {
             return null;
@@ -161,4 +168,26 @@ public class ChatService {
         Random random = new Random();
         return randomResonses[random.nextInt(randomResonses.length)];
     }
+
+
+    public List<Chat> getChatRecordsByYearAndMonth(Long memberId, int year, int month) {
+        // 해당 년도와 월에 해당하는 시작 날짜와 끝 날짜 계산
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        // 해당 기간에 속하는 모든 채팅 데이터 조회
+        List<Chat> allChatsInMonth = chatRepository.findByMemberMemberIdAndLocalDateBetween(memberId, startDate, endDate);
+
+        // 각 날짜의 마지막 대화만 선택
+        Map<LocalDate, Chat> lastChatByDate = new HashMap<>();
+        for (Chat chat : allChatsInMonth) {
+            LocalDate chatDate = chat.getLocalDate();
+            if (!lastChatByDate.containsKey(chatDate) || chat.getInputTime().isAfter(lastChatByDate.get(chatDate).getInputTime())) {
+                lastChatByDate.put(chatDate, chat);
+            }
+        }
+
+        return new ArrayList<>(lastChatByDate.values());
+    }
+
 }

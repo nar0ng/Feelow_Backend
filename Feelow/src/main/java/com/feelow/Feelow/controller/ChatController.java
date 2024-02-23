@@ -3,6 +3,7 @@ package com.feelow.Feelow.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelow.Feelow.domain.dto.CalendarDto;
 import com.feelow.Feelow.domain.dto.ChatResponseDto;
 import com.feelow.Feelow.domain.entity.Chat;
 import com.feelow.Feelow.domain.entity.Member;
@@ -18,8 +19,10 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -70,7 +73,8 @@ public class ChatController {
                 String input = jsonNode.get("input").asText();
                 assert student != null;
                 String chatbotResponse = jsonNode.get("response").asText();
-
+                String historySum = jsonNode.get("history_sum").asText();
+                String todaySentence = jsonNode.get("today_sentence").asText();
                 JsonNode sentimentNode = jsonNode.get("senti_score");
 
                 ChatResponseDto chatResponseDto = null;
@@ -94,14 +98,17 @@ public class ChatController {
                             .inputTime(LocalDateTime.now())
                             .member(member)
                             .date(date)
-                            .build();
+                            .localDate(LocalDate.now())
+                            .historySum(historySum)
+                            .todaySentence(todaySentence).build();
+
 
                     int point = chat.getMember().getStudent().getPoint();
 
                     chatResponseDto = ChatResponseDto.builder()
                             .input(input)
                             .response(chatbotResponse)
-                            .point(point)
+                            .point(point + 10)
                             .build();
 
                     chatService.saveChat(chat);
@@ -136,10 +143,32 @@ public class ChatController {
 
     }
 
-    @GetMapping("/{memberID}/{year}/{month}")
-    public List<Chat> getChatByYearAndMonth(@PathVariable Long memberId, @PathVariable int year, @PathVariable int month){
-        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime endDate = startDate.plusMonths(1).minusNanos(1);
-        return chatRepository.findByMemberIdAndInputTimeBetween(memberId, startDate, endDate);
+    @GetMapping("/{memberId}/{year}/{month}")
+    public ResponseEntity<List<CalendarDto>> getChatRecordsByYearAndMonth(
+            @PathVariable Long memberId,
+            @PathVariable int year,
+            @PathVariable int month) {
+
+        List<Chat> chats = chatService.getChatRecordsByYearAndMonth(memberId, year, month);
+
+        if (chats.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<CalendarDto> chatResponseDtos = chats.stream()
+                .map(this::mapToChatResponseDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(chatResponseDtos);
     }
+
+    private CalendarDto mapToChatResponseDto(Chat chat) {
+        // Chat 엔티티를 ChatResponseDto로 매핑하는 코드 작성
+        return CalendarDto.builder()
+                .historySum(chat.getHistorySum())
+                .todaySentence(chat.getTodaySentence())
+                .localDate(chat.getLocalDate())
+                .build();
+    }
+
 }
