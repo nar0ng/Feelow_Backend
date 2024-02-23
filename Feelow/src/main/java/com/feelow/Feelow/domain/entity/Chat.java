@@ -28,6 +28,8 @@ public class Chat {
 
     private String date;
 
+    private LocalDate localDate;
+
     private String input;
 
     @Column(name = "response", length = 500)
@@ -42,11 +44,11 @@ public class Chat {
     @Column(name = "input_time")
     private LocalDateTime inputTime;
 
+    @Column(name="today_sentence")
+    private String todaySentence;
+
     @Column(name = "history_sum")
     private String historySum;
-
-    @Column(name = "today_sentence")
-    private String todaySentence;
 
     @ManyToOne(optional = false)
     @JsonBackReference
