@@ -38,7 +38,6 @@ public class Item {
 
     @Column(nullable = false)
     @JsonProperty("price")
-    @Column(nullable = false)
     private Long price;
 
     @CreationTimestamp
