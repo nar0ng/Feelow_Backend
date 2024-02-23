@@ -26,7 +26,7 @@ public class OrderLine {
     public OrderLine(final Item item, final int quantity){
         this.item = item;
         this.quantity = quantity;
-        this.amount = item.calculate(quantity);
+        //this.amount = item.calculate(quantity);
     }
 
     public static OrderLine of(final Item item, final int quantity){
